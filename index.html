@@ -154,7 +154,7 @@
         const chatbotSend = document.getElementById('chatbot-send');
         
         const API_KEY = 'AIzaSyBN82AK7MFWulkGAPDJhLBj63FTV3A3P_o';
-        const API_URL = 'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent';
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`;
 
         // Portfolio context for the AI
         const portfolioContext = `You are an AI assistant for Kalicharan Upadhayay's portfolio website. Here is the information about him:
@@ -276,6 +276,8 @@ Answer questions naturally and helpfully. Keep responses concise and friendly.`;
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        "X-goog-api-key": API_KEY,
+
                     },
                     body: JSON.stringify({
                         contents: [
@@ -302,6 +304,7 @@ Answer questions naturally and helpfully. Keep responses concise and friendly.`;
                 const data = await response.json();
                 const aiResponse = data.candidates[0].content.parts[0].text;
 
+                
                 // Add AI response
                 addMessage(aiResponse, false);
 
