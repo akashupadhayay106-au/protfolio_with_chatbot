@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalicharan Upadhayay | Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <nav>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#hobbies">Hobbies</a>
+        <a href="#contact">Contact</a>
+    </nav>
+    <header>
+        <div class="container fade-in" style="animation-delay:0.2s;">
+            <div class="profile-img">
+                <img src="images/kalicharan.jpg" alt="Kalicharan Upadhayay">
+            </div>
+            <h1>Kalicharan Upadhayay</h1>
+            <p>Data Science Enthusiast</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="about" class="fade-in" style="animation-delay:0.3s;">
+            <h2><i class="fas fa-user"></i> About Me</h2>
+            <p>
+                I am Kalicharan Upadhayay, from <strong>Patas, Daund, Pune</strong>. I have successfully completed a <strong>Data Science course</strong> and am passionate about turning data into meaningful insights.
+            </p>
+        </section>
+
+        <section id="skills" class="fade-in" style="animation-delay:0.4s;">
+            <h2><i class="fas fa-cogs"></i> My Skills</h2>
+            <ul>
+                <li>
+                    <strong>Python:</strong>
+                    <ul>
+                        <li>Core Python (Data types, OOPs, File Handling, Exception Handling)</li>
+                        <li>Libraries: NumPy, Pandas, Matplotlib, Seaborn, Scikit-learn</li>
+                        <li>Data Cleaning, Data Manipulation, Data Visualization</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Machine Learning & AI:</strong>
+                    <ul>
+                        <li>Supervised Learning: Linear Regression, Logistic Regression, Decision Trees, Random Forest, SVM</li>
+                        <li>Unsupervised Learning: K-Means Clustering, PCA</li>
+                        <li>Model Evaluation, Hyperparameter Tuning, Cross Validation</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Deep Learning:</strong>
+                    <ul>
+                        <li>Neural Networks basics, Keras, TensorFlow (Beginner)</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>SQL:</strong>
+                    <ul>
+                        <li>Data Querying, Joins, Aggregations, Subqueries</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Statistics:</strong>
+                    <ul>
+                        <li>Descriptive & Inferential Statistics, Probability, Hypothesis Testing</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Data Visualization:</strong>
+                    <ul>
+                        <li>Matplotlib, Seaborn, Power BI, Tableau (Basic)</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <section id="projects" class="fade-in" style="animation-delay:0.5s;">
+            <h2><i class="fas fa-project-diagram"></i> Projects</h2>
+            <ul>
+                <li>
+                    <strong>Sales Prediction Model:</strong>
+                    <ul>
+                        <li>Developed a regression model using Python and scikit-learn to predict sales based on historical data.</li>
+                        <li>Performed data cleaning, feature engineering, and model evaluation (R2, RMSE).</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Customer Segmentation:</strong>
+                    <ul>
+                        <li>Applied K-Means clustering to segment customers for targeted marketing strategies.</li>
+                        <li>Visualized clusters and interpreted business insights.</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Data Dashboard:</strong>
+                    <ul>
+                        <li>Created interactive dashboards using Power BI and Tableau for business reporting.</li>
+                        <li>Integrated multiple data sources and designed user-friendly layouts.</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <section id="hobbies" class="fade-in" style="animation-delay:0.6s;">
+            <h2><i class="fas fa-heart"></i> My Hobbies</h2>
+            <ul>
+                <li>Reading</li>
+                <li>Coding</li>
+                <li>Traveling</li>
+                <li>Photography</li>
+            </ul>
+        </section>
+
+        <section id="contact" class="fade-in" style="animation-delay:0.7s;">
+            <h2><i class="fas fa-envelope"></i> Contact Me</h2>
+            <p><i class="fas fa-envelope"></i> Email: <a href="mailto:kalicharanupadhayayofficial@gmail.com">kalicharanupadhayayofficial@gmail.com</a></p>
+            <p><i class="fab fa-linkedin"></i> LinkedIn: <a href="https://www.linkedin.com/in/kalicharan-upadhayay-2637b4324/" target="_blank">linkedin.com/in/kalicharan-upadhayay</a></p>
+            <p><i class="fab fa-github"></i> GitHub: <a href="https://github.com/akashupadhayay106-au" target="_blank">github.com/akashupadhayay106-au</a></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Kalicharan Upadhayay. All rights reserved.</p>
+    </footer>
+
+    <!-- AI-Powered Portfolio Chatbot -->
+    <div id="chatbot-widget" style="display:none;">
+        <div id="chatbot-header">
+            <span><i class="fas fa-robot"></i> AI Portfolio Assistant</span>
+            <button id="chatbot-close" type="button">&times;</button>
+        </div>
+        <div id="chatbot-body">
+            <div class="chatbot-msg bot">Hi! I'm your AI portfolio assistant. Ask me about Kalicharan's skills, projects, experience, or anything else!</div>
+        </div>
+        <div id="chatbot-input-area">
+            <input type="text" id="chatbot-input" placeholder="Type your question...">
+            <button id="chatbot-send"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+    <button id="chatbot-toggle" type="button"><i class="fas fa-comment-dots"></i></button>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const chatbotWidget = document.getElementById('chatbot-widget');
+        const chatbotToggle = document.getElementById('chatbot-toggle');
+        const chatbotClose = document.getElementById('chatbot-close');
+        const chatbotBody = document.getElementById('chatbot-body');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const chatbotSend = document.getElementById('chatbot-send');
+        
+        const API_KEY = 'AIzaSyBN82AK7MFWulkGAPDJhLBj63FTV3A3P_o';
+        const API_URL = 'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent';
+
+        // Portfolio context for the AI
+        const portfolioContext = `You are an AI assistant for Kalicharan Upadhayay's portfolio website. Here is the information about him:
+
+Name: Kalicharan Upadhayay
+Location: Patas, Daund, Pune
+Profile: Data Science Enthusiast
+
+Education & Background:
+- Successfully completed a Data Science course
+- Passionate about turning data into meaningful insights
+
+Technical Skills:
+1. Python: Core Python, NumPy, Pandas, Matplotlib, Seaborn, Scikit-learn, Data Cleaning, Data Manipulation, Data Visualization
+2. Machine Learning & AI: Linear Regression, Logistic Regression, Decision Trees, Random Forest, SVM, K-Means Clustering, PCA, Model Evaluation, Hyperparameter Tuning
+3. Deep Learning: Neural Networks basics, Keras, TensorFlow (Beginner)
+4. SQL: Data Querying, Joins, Aggregations, Subqueries
+5. Statistics: Descriptive & Inferential Statistics, Probability, Hypothesis Testing
+6. Data Visualization: Matplotlib, Seaborn, Power BI, Tableau (Basic)
+
+Projects:
+1. Sales Prediction Model - Regression model using Python and scikit-learn
+2. Customer Segmentation - K-Means clustering for targeted marketing
+3. Data Dashboard - Interactive dashboards using Power BI and Tableau
+
+Hobbies: Reading, Coding, Traveling, Photography
+
+Contact:
+- Email: kalicharanupadhayayofficial@gmail.com
+- LinkedIn: linkedin.com/in/kalicharan-upadhayay-2637b4324
+- GitHub: github.com/akashupadhayay106-au
+
+Answer questions naturally and helpfully. Keep responses concise and friendly.`;
+
+        let conversationHistory = [];
+
+        // Open chatbot
+        chatbotToggle.onclick = function () {
+            chatbotWidget.style.display = 'flex';
+            if (window.innerWidth < 700) {
+                setTimeout(() => {
+                    chatbotWidget.scrollIntoView({ behavior: "smooth", block: "center" });
+                }, 200);
+            }
+        };
+
+        // Close chatbot
+        chatbotClose.onclick = function () {
+            chatbotWidget.style.display = 'none';
+        };
+
+        // Close on outside click
+        document.addEventListener('mousedown', function (e) {
+            if (
+                chatbotWidget.style.display === 'flex' &&
+                !chatbotWidget.contains(e.target) &&
+                !chatbotToggle.contains(e.target)
+            ) {
+                chatbotWidget.style.display = 'none';
+            }
+        });
+
+        // Close on ESC key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === "Escape" && chatbotWidget.style.display === 'flex') {
+                chatbotWidget.style.display = 'none';
+            }
+        });
+
+        // Add message to chat
+        function addMessage(message, isUser) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = isUser ? 'chatbot-msg user' : 'chatbot-msg bot';
+            msgDiv.textContent = message;
+            chatbotBody.appendChild(msgDiv);
+            chatbotBody.scrollTop = chatbotBody.scrollHeight;
+        }
+
+        // Add loading indicator
+        function addLoadingMessage() {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'chatbot-msg loading';
+            msgDiv.id = 'loading-msg';
+            msgDiv.textContent = 'Thinking...';
+            chatbotBody.appendChild(msgDiv);
+            chatbotBody.scrollTop = chatbotBody.scrollHeight;
+        }
+
+        // Remove loading indicator
+        function removeLoadingMessage() {
+            const loadingMsg = document.getElementById('loading-msg');
+            if (loadingMsg) {
+                loadingMsg.remove();
+            }
+        }
+
+        // Send message to AI
+        async function sendMessage() {
+            const userMessage = chatbotInput.value.trim();
+            if (!userMessage) return;
+
+            // Add user message
+            addMessage(userMessage, true);
+            chatbotInput.value = '';
+            chatbotInput.disabled = true;
+            chatbotSend.disabled = true;
+
+            // Add to conversation history
+            conversationHistory.push({
+                role: 'user',
+                parts: [{ text: userMessage }]
+            });
+
+            // Show loading
+            addLoadingMessage();
+
+            try {
+                const response = await fetch(`${API_URL}?key=${API_KEY}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [
+                            {
+                                role: 'user',
+                                parts: [{ 
+                                    text: portfolioContext + '\n\nUser: ' + userMessage
+                                }]
+                            }
+                        ],
+                        generationConfig: {
+                            temperature: 0.7,
+                            maxOutputTokens: 800,
+                        }
+                    })
+                });
+
+                removeLoadingMessage();
+
+                if (!response.ok) {
+                    throw new Error('API request failed');
+                }
+
+                const data = await response.json();
+                const aiResponse = data.candidates[0].content.parts[0].text;
+
+                // Add AI response
+                addMessage(aiResponse, false);
+
+                // Add to conversation history
+                conversationHistory.push({
+                    role: 'model',
+                    parts: [{ text: aiResponse }]
+                });
+
+                // Keep only last 10 exchanges to manage context size
+                if (conversationHistory.length > 20) {
+                    conversationHistory = conversationHistory.slice(-20);
+                }
+
+            } catch (error) {
+                removeLoadingMessage();
+                addMessage('Sorry, I encountered an error. Please try again.', false);
+                console.error('Chatbot error:', error);
+            } finally {
+                chatbotInput.disabled = false;
+                chatbotSend.disabled = false;
+                chatbotInput.focus();
+            }
+        }
+
+        // Send button click
+        chatbotSend.onclick = sendMessage;
+
+        // Enter key press
+        chatbotInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    });
+    </script>
+</body>
+</html>
