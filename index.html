@@ -3,234 +3,557 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalicharan Upadhayay | Portfolio</title>
+    <meta
+        name="description"
+        content="Kalicharan Upadhayay - Data Science professional with expertise in Python, SQL, Machine Learning, Power BI, and Generative AI."
+    >
+    <title>Kalicharan Upadhayay | Data Science Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    >
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <nav>
-        <a href="#about">About</a>
-        <a href="#education">Education</a>
-        <a href="#skills">Skills</a>
-        <a href="#experience">Experience</a>
-        <a href="#projects">Projects</a>
-        <a href="#hobbies">Hobbies</a>
-        <a href="#contact">Contact</a>
-        <button id="dark-mode-toggle" aria-label="Toggle dark mode"><i class="fas fa-moon"></i></button>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div id="scroll-progress" aria-hidden="true"></div>
+
+    <nav class="top-nav" aria-label="Primary">
+        <a class="brand" href="#home">Kalicharan Upadhayay</a>
+        <button
+            id="nav-toggle"
+            class="nav-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="nav-links"
+            aria-label="Toggle navigation"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div id="nav-links" class="nav-links">
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#experience">Experience</a>
+            <a href="#projects">Projects</a>
+            <a href="#education">Education</a>
+            <a href="#contact">Contact</a>
+            <a class="nav-resume-link" href="Kalicharan_Upadhayay_Resume.txt" download>Resume</a>
+        </div>
+        <button id="dark-mode-toggle" class="mode-toggle" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+        </button>
     </nav>
-    <header>
-        <div class="container fade-in" style="animation-delay:0.2s;">
-            <div class="profile-img">
-                <img src="images/profile.jpg" alt="Kalicharan Upadhayay">
+
+    <header id="home" class="hero">
+        <div class="hero-bg-orb"></div>
+        <div class="hero-orb hero-orb-one" aria-hidden="true"></div>
+        <div class="hero-orb hero-orb-two" aria-hidden="true"></div>
+        <div class="container hero-grid">
+            <div class="hero-copy reveal">
+                <span class="eyebrow">Data Science | Analytics | Applied AI</span>
+                <h1>Kalicharan Upadhayay</h1>
+                <p class="hero-title">
+                    Building practical impact as a
+                    <span id="typed-role" class="typed-role" aria-live="polite"></span>
+                </p>
+                <p class="hero-summary">
+                    Data Science professional with experience in Python, SQL, Machine Learning,
+                    Power BI, and Generative AI. I design data-driven solutions, mentor learners
+                    through hands-on projects, and build useful AI applications with LLMs, Docker,
+                    and REST APIs.
+                </p>
+                <div class="hero-meta">
+                    <span><i class="fas fa-location-dot"></i> Pune, Maharashtra</span>
+                    <span><i class="fas fa-phone"></i> +91-9823865388</span>
+                    <span><i class="fas fa-envelope"></i> kalicharanupadhayayofficial@gmail.com</span>
+                </div>
+                <div class="cta-row">
+                    <a class="btn btn-primary" href="#projects">View Projects</a>
+                    <a class="btn btn-secondary resume-btn" href="./assets/resume/Kunal-Resume.pdf" download="Kunal-Resume.pdf" target="_blank" rel="noopener">
+                        <i class="fas fa-file-download"></i> Download Resume
+                    </a>
+                    <a class="btn btn-outline" href="#contact"><i class="fas fa-envelope"></i> Contact Me</a>
+                    <a class="btn btn-outline" href="https://github.com/akashupadhayay106-au" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> View GitHub</a>
+                </div>
+                <div class="header-socials" aria-label="Social links">
+                    <a
+                        href="https://www.linkedin.com/in/kalicharan-upadhayay-2637b4324/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Open LinkedIn profile"
+                    ><i class="fab fa-linkedin-in"></i></a>
+                    <a
+                        href="https://github.com/akashupadhayay106-au"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Open GitHub profile"
+                    ><i class="fab fa-github"></i></a>
+                    <a href="#contact" aria-label="Go to contact section"><i class="fas fa-paper-plane"></i></a>
+                </div>
             </div>
-            <h1>Kalicharan Upadhayay</h1>
-            <p>Data Science Enthusiast & <span id="animated-skill"></span></p>
+
+            <div class="hero-side reveal">
+                <div class="profile-card">
+                    <div class="profile-frame">
+                        <img
+                            src="./assets/images/profile.jpeg"
+                            alt="Portrait of Kalicharan Upadhayay smiling in a white shirt"
+                            class="profile-photo"
+                            loading="eager"
+                            decoding="async"
+                            onerror="this.style.display='none'; this.nextElementSibling.classList.add('active');"
+                        >
+                        <div class="profile-photo-fallback" aria-hidden="true">
+                            <span>KU</span>
+                        </div>
+                    </div>
+                    <div class="availability-card">
+                        <span class="availability-dot"></span>
+                        Open to analytics, AI, and training opportunities
+                    </div>
+                    <div class="mini-stats">
+                    <div class="stat-card reveal" style="transition-delay: 100ms;">
+                        <span class="stat-num" data-target="100">0</span><span class="stat-plus">+</span>
+                        <span class="stat-label">Mentorship Sessions</span>
+                    </div>
+                    <div class="stat-card reveal" style="transition-delay: 200ms;">
+                        <span class="stat-num" data-target="500">0</span><span class="stat-plus">+</span>
+                        <span class="stat-label">Students Guided</span>
+                    </div>
+                    <div class="stat-card reveal" style="transition-delay: 300ms;">
+                        <span class="stat-num" data-target="10000">0</span><span class="stat-plus">+</span>
+                        <span class="stat-label">Data Records Processed</span>
+                    </div>
+                    <div class="stat-card reveal" style="transition-delay: 400ms;">
+                        <span class="stat-num" data-target="4">0</span>
+                        <span class="stat-label">LLM APIs used</span>
+                    </div>
+                </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
-    <main class="container">
-        <section id="about" class="fade-in" style="animation-delay:0.3s;">
-            <h2><i class="fas fa-user"></i> About Me</h2>
-            <p>
-                I am Kalicharan Upadhayay, from <strong>kadethan ,taluka:-Daund,District PUNE</strong>. I have successfully completed a <strong>Data Science course</strong> and am passionate about turning data into meaningful insights.
+    <main id="main-content" class="container">
+        <section id="about" class="section-card reveal">
+            <div class="section-heading">
+                <span class="section-kicker">About</span>
+                <h2>Professional Summary</h2>
+            </div>
+            <p class="lead-text">
+                I combine analytics, communication, and solution building to create real business
+                value. My work spans technical training, exploratory data analysis, machine
+                learning, dashboard design, and modern Generative AI workflows such as prompt
+                engineering, retrieval-based systems, and API-driven applications.
             </p>
+            <div class="highlight-grid">
+                <article class="highlight-card reveal">
+                    <h3>Training Impact</h3>
+                    <p>Delivered instructor-led sessions on Python, SQL, Data Analysis, Machine Learning, Power BI, and Generative AI.</p>
+                </article>
+                <article class="highlight-card reveal">
+                    <h3>Applied AI</h3>
+                    <p>Built secure and cost-aware AI solutions using LLMs, Docker, REST APIs, and multi-model workflows.</p>
+                </article>
+                <article class="highlight-card reveal">
+                    <h3>Analytics Foundation</h3>
+                    <p>Experienced in data validation, EDA, visualization, feature engineering, and business reporting.</p>
+                </article>
+            </div>
         </section>
 
-        <section id="education" class="fade-in" style="animation-delay:0.4s;">
-            <h2><i class="fas fa-graduation-cap"></i> Education</h2>
-            <ul>
-                <li>
-                    <strong>Varvand Gram Shikshan Sansthas Eiknath Sitaram Divekar College</strong>
-                    <ul>
-                        <li>Bachelor of Business Administration (Computer Applications)</li>
-                        <li><em>Jul 2022 - May 2025</em></li>
-                        <li>CGPA: 6.83</li>
-                        <li>Relevant coursework: Data Analysis with Python, Advanced Excel, SQL & Databases (MySQL), Power BI & Tableau, Business Analytics, Digital Marketing , AWS Fundamentals, Project Management Essentials</li>
-                    </ul>
-                </li>
-                <li>
-                    <strong>Gopinath Secondary And Higher Secondary School</strong>
-                     <ul>
-                        <li>HSC(PCMB)</li>
-                        <li><em>Jun 2021 - Apr 2022</em></li>
-                        <li>Percentage: 62.37%</li>
-                    </ul>
-                </li>
-            </ul>
-        </section>
+        <section id="skills" class="section-card reveal">
+            <div class="section-heading">
+                <span class="section-kicker">Expertise</span>
+                <h2>Technical Skills</h2>
+            </div>
+            
+            <div class="skills-visualization reveal">
+                <canvas id="skillsChart" height="250"></canvas>
+            </div>
 
-        <section id="skills" class="fade-in" style="animation-delay:0.5s;">
-            <h2><i class="fas fa-cogs"></i> My Skills</h2>
-            <ul>
-                <li>
-                    <strong>Python:</strong>
-                    <ul>
-                        <li>Core Python (Data types, OOPs, File Handling, Exception Handling)</li>
-                        <li>Libraries: NumPy, Pandas, Matplotlib, Seaborn, Scikit-learn</li>
-                        <li>Data Cleaning, Data Manipulation, Data Visualization</li>
-                    </ul>
-                </li>
-                <li>
-                    <strong>Machine Learning & AI:</strong>
-                    <ul>
-                        <li>Supervised Learning: Linear Regression, Logistic Regression, Decision Trees, Random Forest, SVM</li>
-                        <li>Unsupervised Learning: K-Means Clustering, PCA</li>
-                        <li>Model Evaluation, Hyperparameter Tuning, Cross Validation</li>
-                    </ul>
-                </li>
-                <li>
-                    <strong>Deep Learning:</strong>
-                    <ul>
-                        <li>Neural Networks basics, Keras, TensorFlow (Beginner)</li>
-                    </ul>
-                </li>
-                <li>
-                    <strong>SQL:</strong>
-                    <ul>
-                        <li>Data Querying, Joins, Aggregations, Subqueries</li>
-                    </ul>
-                </li>
-                <li>
-                    <strong>Statistics:</strong>
-                    <ul>
-                        <li>Descriptive & Inferential Statistics, Probability, Hypothesis Testing</li>
-                    </ul>
-                </li>
-                <li>
-                    <strong>Data Visualization:</strong>
-                    <ul>
-                        <li>Matplotlib, Seaborn, Power BI, Tableau (Basic)</li>
-                    </ul>
-                </li>
-            </ul>
-        </section>
-
-        <section id="experience" class="fade-in" style="animation-delay:0.6s;">
-            <h2><i class="fas fa-briefcase"></i> Professional Experience</h2>
-            <ul>
-                <li>
-                    <strong>Nandini Enterprises - Kurkumb,Daund,Pune</strong>
-                    <ul>
-                        <li><em>Data Entry Operator (Mar 2023 - Aug 2024)</em></li>
-                        <li>Managed and analyzed daily production and inventory data with 99% accuracy.</li>
-                        <li>Entered, updated, and managed large datasets in company database with high accuracy.</li>
-                        <li>Performed data validation, cleaning, and reporting using Excel, Power BI.</li>
-                        <li>Maintained large datasets (10,000+ entries/month) ensuring data completeness and reliability for audits.</li>
-                        <li>Coordinated with teams to ensure timely availability of accurate information.</li>
-                        <li>Collaborated with Cipla’s quality and operations team to track key performance metrics (KPI) and minimize data discrepancies by 15%.</li>
-                        <li>Took ownership of data management tasks, ensuring high accuracy and integrity in all data operations.</li>
-                    </ul>
-                </li>
-                <li>
-                    <strong>Defence Guru Cyber Education Institute , Pune</strong>
-                    <ul>
-                        <li><em>Data Analytics Trainee (Jun 2025 - Present)</em></li>
-                        <li>Performed data cleaning, analysis, and visualization on cybersecurity datasets using Python, SQL, and Excel.</li>
-                        <li>Developed interactive dashboards and reports in Power BI and Tableau to track key trends, anomalies, and risks.</li>
-                        <li>Generated simple reports from collected data to assist in operational tracking.</li>
-                        <li>Strengthened skills in ETL, data modeling, and visualization while contributing to data-driven security monitoring and reporting workflows.</li>
-                    </ul>
-                </li>
-            </ul>
-        </section>
-
-        <section id="projects" class="fade-in" style="animation-delay:0.7s;">
-            <h2><i class="fas fa-project-diagram"></i> Projects</h2>
-            <ul class="project-list">
-                <li class="project-card">
-                    <div class="project-content">
-                        <strong>Sales & Inventory Analysis – Online Medical Store</strong>
-                        <ul>
-                            <li><em>Aug 2023 - Sep 2023</em></li>
-                            <li>Collected and managed sales & inventory data from an Online Medical Store system using Python & MySQL.</li>
-                        </ul>
+            <div class="skill-grid">
+                <article class="skill-card reveal">
+                    <h3>Programming</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag" title="Python"><i class="devicon-python-plain"></i> Python</span>
+                        <span class="skill-tag" title="SQL"><i class="devicon-mysql-plain"></i> SQL</span>
                     </div>
-                    <div class="project-hover-content">
-                        <p>Analyzed sales data to identify trends and optimize inventory management.</p>
+                </article>
+                <article class="skill-card reveal">
+                    <h3>Data Analysis</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag" title="Pandas"><i class="devicon-pandas-original"></i> Pandas</span>
+                        <span class="skill-tag" title="NumPy"><i class="devicon-numpy-original"></i> NumPy</span>
+                        <span class="skill-tag" title="EDA"><i class="fas fa-chart-line"></i> EDA</span>
+                    </div>
+                </article>
+                <article class="skill-card reveal">
+                    <h3>Machine Learning</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag" title="Scikit-Learn"><i class="devicon-scikitlearn-original"></i> Scikit-learn</span>
+                        <span class="skill-tag" title="Algorithms"><i class="fas fa-brain"></i> Regression & Clustering</span>
+                    </div>
+                </article>
+                <article class="skill-card reveal">
+                    <h3>Generative AI</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag" title="LLMs"><i class="fas fa-robot"></i> LLMs</span>
+                        <span class="skill-tag" title="RAG"><i class="fas fa-database"></i> RAG</span>
+                        <span class="skill-tag" title="Prompt Engineering"><i class="fas fa-terminal"></i> Prompt Engineering</span>
+                    </div>
+                </article>
+                <article class="skill-card reveal">
+                    <h3>Visualization</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag" title="Power BI"><i class="fas fa-chart-pie"></i> Power BI</span>
+                        <span class="skill-tag" title="Tableau"><i class="fas fa-chart-bar"></i> Tableau</span>
+                        <span class="skill-tag" title="Matplotlib"><i class="fas fa-image"></i> Matplotlib & Seaborn</span>
+                    </div>
+                </article>
+                <article class="skill-card reveal">
+                    <h3>Cloud and DevOps</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag" title="Docker"><i class="devicon-docker-plain"></i> Docker</span>
+                        <span class="skill-tag" title="Git"><i class="devicon-git-plain"></i> Git & GitHub</span>
+                        <span class="skill-tag" title="REST APIs"><i class="fas fa-network-wired"></i> REST APIs</span>
+                    </div>
+                </article>
+                <article class="skill-card reveal">
+                    <h3>Tools</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag" title="VS Code"><i class="devicon-vscode-plain"></i> VS Code</span>
+                        <span class="skill-tag" title="Jupyter"><i class="devicon-jupyter-plain"></i> Jupyter</span>
+                    </div>
+                </article>
+                <article class="skill-card reveal">
+                    <h3>Strengths</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag"><i class="fas fa-chalkboard-teacher"></i> Mentoring</span>
+                        <span class="skill-tag"><i class="fas fa-users"></i> Project Guidance</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="experience" class="section-card reveal">
+            <div class="section-heading">
+                <span class="section-kicker">Journey</span>
+                <h2>Professional Experience</h2>
+            </div>
+            <div class="timeline">
+                <article class="timeline-card reveal">
+                    <div class="timeline-head">
+                        <div>
+                            <h3>Data Science Trainer</h3>
+                            <p class="timeline-subtitle">Skillected JSSAV Education Pvt. Ltd., Pune</p>
+                        </div>
+                        <span>Feb 2026 - Present</span>
+                    </div>
+                    <ul>
+                        <li>Delivered 100+ instructor-led sessions on Python, SQL, Data Analysis, Machine Learning, Power BI, and Generative AI.</li>
+                        <li>Mentored 500+ students through hands-on projects, EDA, dashboard development, and predictive modeling.</li>
+                        <li>Designed assignments, coding assessments, and mock interviews to improve job readiness.</li>
+                    </ul>
+                </article>
+
+                <article class="timeline-card reveal">
+                    <div class="timeline-head">
+                        <div>
+                            <h3>Data Analyst Trainer</h3>
+                            <p class="timeline-subtitle">Defence Guru Cyber Education, Pune</p>
+                        </div>
+                        <span>Jun 2025 - Dec 2025</span>
+                    </div>
+                    <ul>
+                        <li>Trained 500+ students in Python, SQL, Excel, Power BI, and Data Analysis.</li>
+                        <li>Conducted project-based learning using real-world datasets and visualization techniques.</li>
+                        <li>Created coding assignments and interview-focused practice material.</li>
+                    </ul>
+                </article>
+
+                <article class="timeline-card reveal">
+                    <div class="timeline-head">
+                        <div>
+                            <h3>Data Operations Associate</h3>
+                            <p class="timeline-subtitle">Nandini Enterprises, Kurkumb | Client: Cipla Ltd.</p>
+                        </div>
+                        <span>Mar 2023 - Aug 2024</span>
+                    </div>
+                    <ul>
+                        <li>Managed and validated 10K+ production records while maintaining high data accuracy.</li>
+                        <li>Performed data validation, quality checks, and generated Excel-based operational reports.</li>
+                        <li>Collaborated with cross-functional teams to support reliable business reporting.</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section id="projects" class="section-card reveal">
+            <div class="section-heading">
+                <span class="section-kicker">Work</span>
+                <h2>Featured Projects</h2>
+            </div>
+            <div class="carousel-container">
+                <div class="carousel-track" id="projects-track">
+                    <article class="project-card carousel-slide">
+                        <div class="project-top">
+                            <div>
+                                <h3>Prompt Shield - AI Security Framework</h3>
+                                <p class="project-summary">LLM security framework for safer AI interactions.</p>
+                            </div>
+                            <span>LLM Security</span>
+                        </div>
+                        <ul>
+                            <li>Implemented prompt validation and ML-based request filtering to detect prompt injection and jailbreak attacks.</li>
+                            <li>Used Docker deployment and REST APIs for secure AI workflows.</li>
+                            <li>Built monitoring dashboards to improve observability and security visibility.</li>
+                        </ul>
                         <div class="tech-stack">
                             <span>Python</span>
-                            <span>Pandas</span>
-                            <span>MySQL</span>
+                            <span>Machine Learning</span>
+                            <span>Docker</span>
+                            <span>REST APIs</span>
+                            <span>LLMs</span>
                         </div>
-                        <button class="case-study-btn">View Case Study</button>
-                    </div>
-                </li>
-                <li class="project-card">
-                    <div class="project-content">
-                        <strong>Impact Analysis of Good Thought NGO Initiatives</strong>
+                    </article>
+
+                    <article class="project-card carousel-slide">
+                        <div class="project-top">
+                            <div>
+                                <h3>Cloud FinOps AI Assistant</h3>
+                                <p class="project-summary">Enterprise cost optimization with retrieval and multi-model orchestration.</p>
+                            </div>
+                            <span>RAG + Multi-LLM</span>
+                        </div>
                         <ul>
-                            <li><em>Aug 2025 - Sep 2025</em></li>
-                            <li>Used SQL to perform an impact analysis of Good Thought NGO's projects over 13 years.</li>
+                            <li>Built a RAG-based AI assistant integrating four LLM APIs for cloud cost optimization.</li>
+                            <li>Reduced token usage through prompt optimization and more efficient request design.</li>
+                            <li>Improved cloud efficiency and business decision support using AI-assisted recommendations.</li>
                         </ul>
-                    </div>
-                    <div class="project-hover-content">
-                        <p>Analyzed 13 years of data to measure the social impact of NGO initiatives.</p>
                         <div class="tech-stack">
-                            <span>SQL</span>
-                            <span>Data Analysis</span>
+                            <span>RAG</span>
+                            <span>LLMs</span>
+                            <span>Prompt Engineering</span>
+                            <span>Docker</span>
+                            <span>APIs</span>
                         </div>
-                        <button class="case-study-btn">View Case Study</button>
+                    </article>
+                </div>
+                <button class="carousel-btn prev-btn" aria-label="Previous project"><i class="fas fa-chevron-left"></i></button>
+                <button class="carousel-btn next-btn" aria-label="Next project"><i class="fas fa-chevron-right"></i></button>
+                <div class="carousel-dots" id="projects-dots"></div>
+            </div>
+        </section>
+
+        <section id="education" class="section-card reveal">
+            <div class="section-heading">
+                <span class="section-kicker">Academics</span>
+                <h2>Education and Certifications</h2>
+            </div>
+            <div class="dual-grid">
+                <div class="stack-panel reveal">
+                    <h3>Education</h3>
+                    <div class="edu-grid">
+                        <article class="edu-card reveal">
+                            <h4>Bachelor of Business Administration (Computer Applications)</h4>
+                            <p>E.S. Divekar College, Pune University</p>
+                            <span>2022 - 2025</span>
+                            <strong>CGPA: 6.83</strong>
+                        </article>
+                        <article class="edu-card reveal">
+                            <h4>Higher Secondary Certificate (PCMB)</h4>
+                            <p>Science-focused higher secondary education.</p>
+                            <span>2021 - 2022</span>
+                            <strong>Percentage: 62.37%</strong>
+                        </article>
                     </div>
-                </li>
-            </ul>
+                </div>
+                <div class="stack-panel reveal">
+                    <h3>Certifications</h3>
+                    <div class="chip-list">
+                        <span>Data Science Certification</span>
+                        <span>Python Programming</span>
+                        <span>SQL for Data Analytics</span>
+                        <span>Microsoft Power BI</span>
+                        <span>Machine Learning Fundamentals</span>
+                        <span>Generative AI Fundamentals</span>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <section id="hobbies" class="fade-in" style="animation-delay:0.8s;">
-            <h2><i class="fas fa-heart"></i> My Hobbies</h2>
-            <ul>
-                <li>Reading</li>
-                <li>Coding</li>
-                <li>Traveling</li>
-                <li>Photography</li>
-            </ul>
+        <section id="achievements" class="section-card reveal">
+            <div class="section-heading">
+                <span class="section-kicker">Highlights</span>
+                <h2>Achievements and Additional Information</h2>
+            </div>
+            <div class="dual-grid">
+                <div class="stack-panel reveal">
+                    <h3>Achievements</h3>
+                    <ul class="achievement-list">
+                        <li>Delivered 100+ technical sessions across analytics, machine learning, BI, and Generative AI.</li>
+                        <li>Mentored 500+ learners with hands-on projects, assessments, and interview preparation.</li>
+                        <li>Built AI applications using RAG, LLMs, Docker, and REST APIs.</li>
+                        <li>Created project-based assignments that improve practical job readiness.</li>
+                    </ul>
+                </div>
+                <div class="stack-panel reveal">
+                    <h3>Additional Information</h3>
+                    <div class="additional-grid">
+                        <article class="info-card reveal">
+                            <h4>Languages</h4>
+                            <p>English, Hindi, Marathi</p>
+                        </article>
+                        <article class="info-card reveal">
+                            <h4>Interests</h4>
+                            <p>Data Science, Machine Learning, Generative AI, Business Analytics</p>
+                        </article>
+                        <article class="info-card reveal">
+                            <h4>Work Style</h4>
+                            <p>Focused on practical learning, reliable execution, and meaningful business outcomes.</p>
+                        </article>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <section id="contact" class="fade-in" style="animation-delay:0.9s;">
-            <h2><i class="fas fa-envelope"></i> Contact Me</h2>
-            <p><i class="fas fa-envelope"></i> Email: <a href="mailto:kalicharanupadhayayofficial@gmail.com">kalicharanupadhayayofficial@gmail.com</a></p>
-            <p><i class="fab fa-linkedin"></i> LinkedIn: <a href="https://www.linkedin.com/in/kalicharan-upadhayay-2637b4324/" target="_blank">linkedin.com/in/kalicharan-upadhayay</a></p>
-            <p><i class="fab fa-github"></i> GitHub: <a href="https://github.com/akashupadhayay106-au" target="_blank">github.com/akashupadhayay106-au</a></p>
+        <section id="contact" class="section-card reveal">
+            <div class="section-heading">
+                <span class="section-kicker">Connect</span>
+                <h2>Contact</h2>
+            </div>
+            <div class="contact-grid">
+                <a class="contact-card reveal" href="mailto:kalicharanupadhayayofficial@gmail.com">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <strong>Email</strong>
+                        <span>kalicharanupadhayayofficial@gmail.com</span>
+                    </div>
+                </a>
+                <a class="contact-card reveal" href="tel:+919823865388">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <strong>Phone</strong>
+                        <span>+91-9823865388</span>
+                    </div>
+                </a>
+                <a
+                    class="contact-card reveal"
+                    href="https://www.linkedin.com/in/kalicharan-upadhayay-2637b4324/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <i class="fab fa-linkedin-in"></i>
+                    <div>
+                        <strong>LinkedIn</strong>
+                        <span>kalicharan-upadhayay-2637b4324</span>
+                    </div>
+                </a>
+                <a
+                    class="contact-card reveal"
+                    href="https://github.com/akashupadhayay106-au"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <i class="fab fa-github"></i>
+                    <div>
+                        <strong>GitHub</strong>
+                        <span>akashupadhayay106-au</span>
+                    </div>
+                </a>
+            </div>
         </section>
+        <section id="certifications" class="section-card reveal">
+            <div class="section-heading">
+                <span class="section-kicker">Milestones</span>
+                <h2>Certifications & Achievements</h2>
+            </div>
+            <div class="project-grid">
+                <article class="project-card reveal">
+                    <div class="project-top">
+                        <div>
+                            <h3>Data Science & Analytics Certification</h3>
+                            <p class="project-summary">Comprehensive training in Python, SQL, and ML</p>
+                        </div>
+                    </div>
+                    <p class="timeline-subtitle">Completed during professional training & mentorship roles.</p>
+                </article>
+            </div>
+        </section>
+
+        <section id="contact" class="section-card reveal">
+            <div class="section-heading">
+                <span class="section-kicker">Get in Touch</span>
+                <h2>Contact Me</h2>
+            </div>
+            <div class="contact-card" style="text-align: center; padding: 2rem;">
+                <p style="margin-bottom: 1.5rem; color: var(--muted);">I'm currently open to new opportunities in Data Analysis and AI. Let's connect!</p>
+                <div class="cta-row" style="justify-content: center;">
+                    <a href="mailto:kalicharan@example.com" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Email Me</a>
+                    <button class="btn btn-outline" onclick="navigator.clipboard.writeText('kalicharan@example.com'); alert('Email copied to clipboard!');"><i class="fas fa-copy"></i> Copy Email</button>
+                    <a href="https://linkedin.com/in/kalicharan-upadhayay" target="_blank" rel="noopener noreferrer" class="btn btn-outline"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <footer>
-        <p>&copy; 2025 Kalicharan Upadhayay. All rights reserved.</p>
+        <p>&copy; 2026 Kalicharan Upadhayay. All rights reserved.</p>
+        <p>Developed by Kalicharan Upadhayay</p>
     </footer>
 
-    <!-- AI-Powered Portfolio Chatbot -->
-    <div id="chatbot-widget" style="display:none;">
-        <div id="chatbot-header">
-            <span><i class="fas fa-robot"></i> AI Portfolio Assistant</span>
-            <button id="chatbot-close" type="button">&times;</button>
+    <div id="chatbot-widget" class="chatbot-widget" hidden>
+        <div id="chatbot-header" class="chatbot-header">
+            <span><i class="fas fa-comment-dots"></i> Portfolio Guide</span>
+            <button id="chatbot-close" type="button" aria-label="Close portfolio guide">&times;</button>
         </div>
-        <div id="chatbot-body">
-            <div class="chatbot-msg bot">Hi! I'm your AI portfolio assistant. Ask me about Kalicharan's skills, projects, experience, or anything else!</div>
+        <div id="chatbot-body" class="chatbot-body">
+            <div class="chatbot-msg bot">
+                Hi! I am a fully local portfolio guide. Ask about skills, experience, projects, certifications, or contact details.
+            </div>
         </div>
-        <div id="quick-reply-buttons">
-            <button>What are his skills?</button>
-            <button>Tell me about his projects</button>
-            <button>How can I contact him?</button>
+        <div id="quick-reply-buttons" class="quick-reply-buttons">
+            <button type="button">Summarize his profile</button>
+            <button type="button">What projects has he built?</button>
+            <button type="button">How can I contact him?</button>
         </div>
-        <div id="chatbot-input-area">
-            <input type="text" id="chatbot-input" placeholder="Type your question..." aria-label="Chat message">
-            <button id="chatbot-send" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
+        <div id="chatbot-input-area" class="chatbot-input-area">
+            <input
+                type="text"
+                id="chatbot-input"
+                placeholder="Ask about skills, projects, or experience..."
+                aria-label="Ask the local portfolio guide"
+            >
+            <button id="chatbot-send" type="button" aria-label="Send message">
+                <i class="fas fa-paper-plane"></i>
+            </button>
         </div>
         <div class="chatbot-footer">
-            <a href="#" id="notification-settings">Notification settings</a>
+            Static rule-based assistant with no API dependency
         </div>
     </div>
-    <button id="chatbot-toggle" type="button" aria-label="Toggle chat"><i class="fas fa-comment-dots"></i></button>
 
-    <!-- <div id="notification-prompt" style="display:none;">
-        <p>Can we send short notifications for chat replies? No spam — only updates while you’re away.</p>
-        <div>
-            <button id="notify-allow">Allow</button>
-            <button id="notify-deny">No thanks</button>
-        </div>
-        <a href="#" class="privacy-note">We use browser notifications only to update you about chat replies. You can unsubscribe anytime. Read our privacy note.</a>
-    </div> -->
+    <button id="chatbot-toggle" type="button" aria-label="Open portfolio guide">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+
+    <button id="back-to-top" type="button" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <script src="script.js"></script>
-    <script src="notification.js"></script>
 </body>
 </html>

@@ -1,293 +1,624 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const chatbotWidget = document.getElementById('chatbot-widget');
-    const chatbotToggle = document.getElementById('chatbot-toggle');
-    const chatbotClose = document.getElementById('chatbot-close');
-    const chatbotBody = document.getElementById('chatbot-body');
-    const chatbotInput = document.getElementById('chatbot-input');
-    const chatbotSend = document.getElementById('chatbot-send');
-    const quickReplyButtons = document.getElementById('quick-reply-buttons');
-    // VAPID public key for push notifications (replace with your actual key)
-    // const VAPID_PUBLIC_KEY = 'YOUR_VAPID_PUBLIC_KEY';
+document.addEventListener("DOMContentLoaded", () => {
+    const chatbotWidget = document.getElementById("chatbot-widget");
+    const chatbotToggle = document.getElementById("chatbot-toggle");
+    const chatbotClose = document.getElementById("chatbot-close");
+    const chatbotBody = document.getElementById("chatbot-body");
+    const chatbotInput = document.getElementById("chatbot-input");
+    const chatbotSend = document.getElementById("chatbot-send");
+    const quickReplyButtons = document.getElementById("quick-reply-buttons");
+    const darkModeToggle = document.getElementById("dark-mode-toggle");
+    const notificationSettingsLink = document.getElementById("notification-settings");
+    const animatedSkill = document.getElementById("typed-role");
+    const revealItems = document.querySelectorAll(".reveal");
 
-    const API_KEY = 'AIzaSyBN82AK7MFWulkGAPDJhLBj63FTV3A3P_o';
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`;
-
-    const portfolioContext = `You are an AI assistant for Kalicharan Upadhayay's portfolio website. Here is the information about him:
-
-Name: Kalicharan Upadhayay
-Location: kadethan ,taluka:-Daund,District PUNE
-Profile: Data Science Enthusiast
-
-About Me:
-I am a Data Science enthusiast passionate about turning data into meaningful insights.
-
-Education:
-- Varvand Gram Shikshan Sansthas Eiknath Sitaram Divekar College: Bachelor of Business Administration (Computer Applications), Jul 2022 - May 2025, CGPA: 6.83. Coursework includes Data Analysis with Python, Advanced Excel, SQL, Power BI, Tableau, Business Analytics, Digital Marketing, AWS Fundamentals, and Project Management.
-- Gopinath Secondary And Higher Secondary School: HSC(PCMB), Jun 2021 - Apr 2022, Percentage: 62.37%.
-
-Professional Experience:
-- Nandini Enterprises (Mar 2023 - Aug 2024): Data Entry Operator. Managed and analyzed production and inventory data with high accuracy using Excel and Power BI. Maintained large datasets and collaborated with teams to ensure data integrity.
-- Defence Guru Cyber Education Institute (Jun 2025 - Present): Data Analytics Trainee. Performing data cleaning, analysis, and visualization on cybersecurity datasets using Python, SQL, and Excel. Developing dashboards in Power BI and Tableau.
-
-Technical Skills:
-1. Python: Core Python, NumPy, Pandas, Matplotlib, Seaborn, Scikit-learn, Data Cleaning, Data Manipulation, Data Visualization
-2. Machine Learning & AI: Linear Regression, Logistic Regression, Decision Trees, Random Forest, SVM, K-Means Clustering, PCA, Model Evaluation, Hyperparameter Tuning
-3. Deep Learning: Neural Networks basics, Keras, TensorFlow (Beginner)
-4. SQL: Data Querying, Joins, Aggregations, Subqueries
-5. Statistics: Descriptive & Inferential Statistics, Probability, Hypothesis Testing
-6. Data Visualization: Matplotlib, Seaborn, Power BI, Tableau (Basic)
-
-Projects:
-1. Sales & Inventory Analysis – Online Medical Store (Aug 2023 - Sep 2023): Collected, cleaned, and analyzed sales and inventory data using Python, Pandas, and MySQL to support business decisions.
-2. Impact Analysis of Good Thought NGO Initiatives (Aug 2025 - Sep 2025): Used SQL to analyze 13 years of project data to uncover insights on effectiveness and social outcomes.
-
-Hobbies: Reading, Coding, Traveling, Photography
-
-Contact:
-- Email: kalicharanupadhayayofficial@gmail.com
-- LinkedIn: linkedin.com/in/kalicharan-upadhayay-2637b4324
-- GitHub: github.com/akashupadhayay106-au
-
-Answer questions naturally and helpfully. Keep responses concise and friendly.`;
+    const portfolioData = {
+        name: "Kalicharan Upadhayay",
+        role: "Data Science Professional",
+        location: "Pune, Maharashtra",
+        phone: "+91-9823865388",
+        email: "kalicharanupadhayayofficial@gmail.com",
+        linkedin: "https://www.linkedin.com/in/kalicharan-upadhayay-2637b4324/",
+        github: "https://github.com/akashupadhayay106-au",
+        summary: "Data Science professional with experience in Python, SQL, Machine Learning, Power BI, and Generative AI. Experienced in delivering technical training and building AI applications using LLMs, Docker, and REST APIs.",
+        skills: [
+            "Python",
+            "SQL",
+            "Pandas",
+            "NumPy",
+            "EDA",
+            "Data Cleaning",
+            "Feature Engineering",
+            "Scikit-learn",
+            "Regression",
+            "Classification",
+            "Clustering",
+            "LLMs",
+            "Prompt Engineering",
+            "Power BI",
+            "Tableau",
+            "Matplotlib",
+            "Seaborn",
+            "Docker",
+            "REST APIs",
+            "Git",
+            "GitHub"
+        ],
+        experience: [
+            {
+                title: "Data Science Trainer",
+                company: "Skillected JSSAV Education Pvt. Ltd., Pune",
+                duration: "Feb 2026 - Present",
+                points: [
+                    "Delivered 100+ instructor-led sessions on Python, SQL, Data Analysis, Machine Learning, Power BI, and Generative AI.",
+                    "Mentored 500+ students through projects, EDA, dashboards, and predictive modeling.",
+                    "Designed assignments, coding assessments, and mock interviews."
+                ]
+            },
+            {
+                title: "Data Analyst Trainer",
+                company: "Defence Guru Cyber Education, Pune",
+                duration: "Jun 2025 - Dec 2025",
+                points: [
+                    "Trained 500+ students in Python, SQL, Excel, Power BI, and Data Analysis.",
+                    "Conducted project-based learning using real-world datasets.",
+                    "Created coding assignments and interview-focused practice material."
+                ]
+            },
+            {
+                title: "Data Operations Associate",
+                company: "Nandini Enterprises, Kurkumb | Client: Cipla Ltd.",
+                duration: "Mar 2023 - Aug 2024",
+                points: [
+                    "Managed and validated 10K+ production records while maintaining high data accuracy.",
+                    "Performed data validation, quality checks, and Excel-based reporting.",
+                    "Collaborated with cross-functional teams to support reliable business reporting."
+                ]
+            }
+        ],
+        projects: [
+            {
+                name: "Prompt Shield - AI Security Framework",
+                details: "Developed an AI security framework to detect prompt injection and jailbreak attacks in LLM applications.",
+                tech: ["LLMs", "Machine Learning", "Docker", "REST APIs"],
+                impact: "Improved secure AI interactions through prompt validation, request filtering, and monitoring dashboards."
+            },
+            {
+                name: "Cloud FinOps AI Assistant",
+                details: "Built a RAG-based AI assistant integrating four LLM APIs for cloud cost optimization.",
+                tech: ["RAG", "Prompt Engineering", "Docker", "APIs"],
+                impact: "Reduced token consumption and supported better cloud efficiency decisions."
+            }
+        ],
+        education: [
+            "Bachelor of Business Administration (Computer Applications), E.S. Divekar College, Pune University, CGPA 6.83.",
+            "Higher Secondary Certificate (PCMB), Percentage 62.37%."
+        ],
+        certifications: [
+            "Data Science Certification",
+            "Python Programming",
+            "SQL for Data Analytics",
+            "Microsoft Power BI",
+            "Machine Learning Fundamentals",
+            "Generative AI Fundamentals"
+        ],
+        achievements: [
+            "Delivered 100+ technical sessions.",
+            "Mentored 500+ students.",
+            "Built AI applications using RAG, LLMs, Docker, and REST APIs."
+        ],
+        languages: ["English", "Hindi", "Marathi"]
+    };
 
     let conversationHistory = [];
+    let firstMessageSent = false;
 
-    // Open chatbot
-    chatbotToggle.onclick = function () {
-        chatbotWidget.style.display = 'flex';
-        chatbotInput.focus();
 
-        // The notification prompt has been disabled.
-        // if (Notification.permission === 'default' && !localStorage.getItem('notificationPromptShown')) {
-        //     notificationPrompt.style.display = 'block';
-        // }
-
-        if (window.innerWidth < 700) {
-            setTimeout(() => {
-                chatbotWidget.scrollIntoView({ behavior: "smooth", block: "center" });
-            }, 200);
-        }
-        // Notify admin that chat was opened
-        fetch('https://ntfy.sh/kalicharan-portfolio-visits', {
-            method: 'POST',
-            body: 'Visitor opened the chat panel.',
-            headers: {
-                'Title': 'Portfolio Chat Opened',
-                'Priority': 'default',
-                'Tags': 'speech_balloon',
-                'Email': 'kalicharanupadhayayofficial@gmail.com'
-            }
-        }).catch(error => console.error('Error sending notification:', error));
-    };
-
-    // Close chatbot
-    chatbotClose.onclick = function () {
-        chatbotWidget.style.display = 'none';
-    };
-
-    // Close on outside click
-    document.addEventListener('mousedown', function (e) {
-        if (
-            chatbotWidget.style.display === 'flex' &&
-            !chatbotWidget.contains(e.target) &&
-            !chatbotToggle.contains(e.target)
-        ) {
-            chatbotWidget.style.display = 'none';
-        }
-    });
-
-    // Close on ESC key
-    document.addEventListener('keydown', function (e) {
-        if (e.key === "Escape" && chatbotWidget.style.display === 'flex') {
-            chatbotWidget.style.display = 'none';
-        }
-    });
-
-    // Add message to chat
     function addMessage(message, isUser) {
-        const msgDiv = document.createElement('div');
-        msgDiv.className = isUser ? 'chatbot-msg user' : 'chatbot-msg bot';
-        
-        const msgContent = document.createElement('span');
+        if (!chatbotBody) {
+            return;
+        }
+
+        const msgDiv = document.createElement("div");
+        msgDiv.className = isUser ? "chatbot-msg user" : "chatbot-msg bot";
+
+        const msgContent = document.createElement("span");
         msgContent.textContent = message;
         msgDiv.appendChild(msgContent);
 
-        const timestamp = document.createElement('span');
-        timestamp.className = 'timestamp';
-        timestamp.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const timestamp = document.createElement("span");
+        timestamp.className = "timestamp";
+        timestamp.textContent = new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
         msgDiv.appendChild(timestamp);
 
         chatbotBody.appendChild(msgDiv);
         chatbotBody.scrollTop = chatbotBody.scrollHeight;
     }
 
-    // Add loading indicator
     function addLoadingMessage() {
-        const msgDiv = document.createElement('div');
-        msgDiv.className = 'chatbot-msg loading';
-        msgDiv.id = 'loading-msg';
-        msgDiv.innerHTML = '<span>.</span><span>.</span><span>.</span>';
+        if (!chatbotBody) {
+            return;
+        }
+
+        const msgDiv = document.createElement("div");
+        msgDiv.className = "chatbot-msg loading";
+        msgDiv.id = "loading-msg";
+        msgDiv.innerHTML = "<span></span><span></span><span></span>";
         chatbotBody.appendChild(msgDiv);
         chatbotBody.scrollTop = chatbotBody.scrollHeight;
     }
 
-    // Remove loading indicator
     function removeLoadingMessage() {
-        const loadingMsg = document.getElementById('loading-msg');
+        const loadingMsg = document.getElementById("loading-msg");
         if (loadingMsg) {
             loadingMsg.remove();
         }
     }
 
-    // Send message to AI
-    async function sendMessage(message) {
-        const userMessage = message || chatbotInput.value.trim();
-        if (!userMessage) return;
+    function fallbackResponse(userMessage) {
+        const query = userMessage.toLowerCase();
 
-        addMessage(userMessage, true);
-        if(!message) chatbotInput.value = '';
-        chatbotInput.disabled = true;
-        chatbotSend.disabled = true;
-        quickReplyButtons.style.display = 'none';
-
-        if (conversationHistory.length === 0) {
-            // Notify admin of first message
-            fetch('https://ntfy.sh/kalicharan-portfolio-visits', {
-                method: 'POST',
-                body: `Visitor sent first message: "${userMessage}"`,
-                headers: {
-                    'Title': 'Portfolio - First Message',
-                    'Priority': 'high',
-                    'Tags': 'email',
-                    'Email': 'kalicharanupadhayayofficial@gmail.com'
-                }
-            }).catch(error => console.error('Error sending notification:', error));
+        if (query.includes("contact") || query.includes("email") || query.includes("phone")) {
+            return `You can contact ${portfolioData.name} at ${portfolioData.email} or ${portfolioData.phone}. LinkedIn: ${portfolioData.linkedin} | GitHub: ${portfolioData.github}`;
         }
 
-        conversationHistory.push({
-            role: 'user',
-            parts: [{ text: userMessage }]
-        });
+        if (query.includes("skill") || query.includes("tool") || query.includes("technology")) {
+            return `${portfolioData.name} works with ${portfolioData.skills.join(", ")}. He is especially focused on Python, SQL, Machine Learning, Power BI, and Generative AI workflows.`;
+        }
 
+        if (query.includes("project") || query.includes("ai") || query.includes("rag")) {
+            return `Featured projects include ${portfolioData.projects[0].name} and ${portfolioData.projects[1].name}. One focuses on LLM security, and the other is a RAG-based FinOps assistant that integrates multiple LLM APIs.`;
+        }
+
+        if (query.includes("experience") || query.includes("trainer") || query.includes("work")) {
+            return `${portfolioData.name} currently works as a Data Science Trainer and previously worked as a Data Analyst Trainer and Data Operations Associate. He has delivered 100+ sessions and mentored 500+ students.`;
+        }
+
+        if (query.includes("education") || query.includes("college")) {
+            return `${portfolioData.name} completed a Bachelor of Business Administration in Computer Applications from E.S. Divekar College, Pune University, with a CGPA of 6.83.`;
+        }
+
+        if (query.includes("certification") || query.includes("certificate")) {
+            return `Certifications include ${portfolioData.certifications.join(", ")}.`;
+        }
+
+        if (query.includes("language")) {
+            return `${portfolioData.name} can communicate in ${portfolioData.languages.join(", ")}.`;
+        }
+
+        return `${portfolioData.name} is a ${portfolioData.role} based in ${portfolioData.location}, with experience in analytics, training, machine learning, Power BI, and Generative AI solutions. Ask me about his skills, experience, projects, certifications, or contact details.`;
+    }
+
+
+    async function sendMessage(message) {
+        const userMessage = (message || chatbotInput?.value || "").trim();
+        if (!userMessage) {
+            return;
+        }
+
+        addMessage(userMessage, true);
+        if (chatbotInput && !message) {
+            chatbotInput.value = "";
+        }
+
+        if (chatbotInput) {
+            chatbotInput.disabled = true;
+        }
+        if (chatbotSend) {
+            chatbotSend.disabled = true;
+        }
+        if (quickReplyButtons) {
+            quickReplyButtons.style.display = "none";
+        }
+
+        if (!firstMessageSent) {
+            firstMessageSent = true;
+        }
+
+        conversationHistory.push({ role: "user", text: userMessage });
         addLoadingMessage();
 
         try {
-            const response = await fetch(`${API_URL}?key=${API_KEY}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    "X-goog-api-key": API_KEY,
-                },
-                body: JSON.stringify({
-                    contents: [
-                        {
-                            role: 'user',
-                            parts: [{ 
-                                text: portfolioContext + '\n\nUser: ' + userMessage
-                            }]
-                        }
-                    ],
-                    generationConfig: {
-                        temperature: 0.7,
-                        maxOutputTokens: 800,
-                    }
-                })
-            });
+            // Simulated delay for realistic typing effect
+            await new Promise(resolve => setTimeout(resolve, 800));
+            let replyText = fallbackResponse(userMessage);
 
             removeLoadingMessage();
+            addMessage(replyText, false);
+            conversationHistory.push({ role: "assistant", text: replyText });
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(`API request failed with status ${response.status}: ${errorData.error.message}`);
+            if (conversationHistory.length > 12) {
+                conversationHistory = conversationHistory.slice(-12);
             }
-
-            const data = await response.json();
-            if (!data.candidates || !data.candidates[0].content || !data.candidates[0].content.parts || !data.candidates[0].content.parts[0].text) {
-                throw new Error('Invalid API response format');
-            }
-            const aiResponse = data.candidates[0].content.parts[0].text;
-
-            addMessage(aiResponse, false);
-
-            conversationHistory.push({
-                role: 'model',
-                parts: [{ text: aiResponse }]
-            });
-
-            if (conversationHistory.length > 20) {
-                conversationHistory = conversationHistory.slice(-20);
-            }
-
         } catch (error) {
             removeLoadingMessage();
-            addMessage(`Sorry, I encountered an error: ${error.message}. Please check the API key and try again.`, false);
-            console.error('Chatbot error:', error);
+            addMessage("Sorry, I could not process that request right now. Please try again in a moment.", false);
+            console.error("Chatbot error:", error);
         } finally {
-            chatbotInput.disabled = false;
-            chatbotSend.disabled = false;
-            chatbotInput.focus();
+            if (chatbotInput) {
+                chatbotInput.disabled = false;
+                chatbotInput.focus();
+            }
+            if (chatbotSend) {
+                chatbotSend.disabled = false;
+            }
         }
     }
 
-    // Send button click
-    chatbotSend.onclick = () => sendMessage();
+    if (chatbotToggle && chatbotWidget) {
+        chatbotToggle.addEventListener("click", () => {
+            chatbotWidget.style.display = "flex";
+            if (chatbotInput) {
+                chatbotInput.focus();
+            }
+        });
+    }
 
-    // Enter key press
-    chatbotInput.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendMessage();
+    if (chatbotClose && chatbotWidget) {
+        chatbotClose.addEventListener("click", () => {
+            chatbotWidget.style.display = "none";
+        });
+    }
+
+    document.addEventListener("mousedown", (event) => {
+        if (
+            chatbotWidget &&
+            chatbotToggle &&
+            chatbotWidget.style.display === "flex" &&
+            !chatbotWidget.contains(event.target) &&
+            !chatbotToggle.contains(event.target)
+        ) {
+            chatbotWidget.style.display = "none";
         }
     });
 
-    // Quick reply button click
-    quickReplyButtons.addEventListener('click', function(e) {
-        if (e.target.tagName === 'BUTTON') {
-            sendMessage(e.target.textContent);
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && chatbotWidget && chatbotWidget.style.display === "flex") {
+            chatbotWidget.style.display = "none";
         }
     });
 
-    // --- Notification Logic (Disabled) ---
-    // The visitor-facing notification system has been disabled to avoid confusion.
-    // The owner notifications are handled by ntfy.sh via notification.js.
+    if (chatbotSend) {
+        chatbotSend.addEventListener("click", () => sendMessage());
+    }
 
-    // --- Animated Skill ---
-    const skills = ["Data Analyst", "BI Developer", "ML Learner"];
+    if (chatbotInput) {
+        chatbotInput.addEventListener("keypress", (event) => {
+            if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+    }
+
+    if (quickReplyButtons) {
+        quickReplyButtons.addEventListener("click", (event) => {
+            if (event.target.tagName === "BUTTON") {
+                sendMessage(event.target.textContent);
+            }
+        });
+    }
+
+    if (notificationSettingsLink) {
+        notificationSettingsLink.addEventListener("click", (event) => {
+            event.preventDefault();
+            addMessage("The portfolio assistant is active. You can ask about skills, projects, experience, certifications, or contact details.", false);
+        });
+    }
+
+    if (darkModeToggle) {
+        if (localStorage.getItem("darkMode") === "enabled") {
+            document.body.classList.add("dark-mode");
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        darkModeToggle.addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            const darkEnabled = document.body.classList.contains("dark-mode");
+            localStorage.setItem("darkMode", darkEnabled ? "enabled" : "disabled");
+            darkModeToggle.innerHTML = darkEnabled
+                ? '<i class="fas fa-sun"></i>'
+                : '<i class="fas fa-moon"></i>';
+        });
+    }
+
+    const rotatingSkills = [
+        "Data Science Trainer",
+        "Machine Learning Practitioner",
+        "Power BI Analyst",
+        "Generative AI Builder"
+    ];
     let skillIndex = 0;
-    const animatedSkill = document.getElementById('animated-skill');
-
-    function changeSkill() {
-        animatedSkill.style.opacity = 0;
-        setTimeout(() => {
-            skillIndex = (skillIndex + 1) % skills.length;
-            animatedSkill.textContent = skills[skillIndex];
-            animatedSkill.style.opacity = 1;
-        }, 500);
-    }
 
     if (animatedSkill) {
-        animatedSkill.textContent = skills[skillIndex];
-        setInterval(changeSkill, 3000);
+        animatedSkill.textContent = rotatingSkills[0];
+        setInterval(() => {
+            animatedSkill.style.opacity = "0";
+            setTimeout(() => {
+                skillIndex = (skillIndex + 1) % rotatingSkills.length;
+                animatedSkill.textContent = rotatingSkills[skillIndex];
+                animatedSkill.style.opacity = "1";
+            }, 250);
+        }, 2600);
     }
 
-    // --- Dark Mode Toggle ---
-    const darkModeToggle = document.getElementById('dark-mode-toggle');
-    const body = document.body;
+    if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("is-visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.18 }
+        );
 
-    // Check for saved dark mode preference
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        body.classList.add('dark-mode');
-        darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        revealItems.forEach((item) => observer.observe(item));
+    } else {
+        revealItems.forEach((item) => item.classList.add("is-visible"));
     }
 
-    darkModeToggle.addEventListener('click', () => {
-        body.classList.toggle('dark-mode');
-        if (body.classList.contains('dark-mode')) {
-            localStorage.setItem('darkMode', 'enabled');
-            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-        } else {
-            localStorage.setItem('darkMode', 'disabled');
-            darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+    // Profile photo fallback
+    const profileImg = document.querySelector('.profile-photo');
+    if (profileImg) {
+        profileImg.addEventListener('error', function() {
+            this.classList.add('is-missing');
+        });
+    }
+
+    // Carousel Logic
+    const track = document.getElementById('projects-track');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    const dotsContainer = document.getElementById('projects-dots');
+    
+    if (track) {
+        const slides = Array.from(track.children);
+        let currentIndex = 0;
+        let isDragging = false;
+        let startPos = 0;
+        let currentTranslate = 0;
+        let prevTranslate = 0;
+        let animationID;
+
+        // Create dots
+        slides.forEach((_, idx) => {
+            const dot = document.createElement('button');
+            dot.classList.add('carousel-dot');
+            dot.setAttribute('aria-label', `Go to project ${idx + 1}`);
+            if (idx === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(idx));
+            dotsContainer.appendChild(dot);
+        });
+        const dots = Array.from(dotsContainer.children);
+
+        function updateCarousel() {
+            const slideWidth = slides[0].getBoundingClientRect().width;
+            const gap = 24; // Adjust based on gap in CSS (1.5rem = 24px)
+            track.style.transform = `translateX(-${currentIndex * (slideWidth + gap)}px)`;
+            
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[currentIndex].classList.add('active');
+        }
+
+        function goToSlide(index) {
+            currentIndex = index;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex >= slides.length) currentIndex = slides.length - 1;
+            track.style.transition = 'transform 0.4s ease-in-out';
+            updateCarousel();
+        }
+
+        if (prevBtn) prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+        if (nextBtn) nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+
+        window.addEventListener('resize', updateCarousel);
+
+        // Touch/Swipe Support
+        track.addEventListener('touchstart', touchStart);
+        track.addEventListener('touchend', touchEnd);
+        track.addEventListener('touchmove', touchMove);
+
+        // Keyboard Support
+        const carouselContainer = document.querySelector('.carousel-container');
+        if (carouselContainer) {
+            carouselContainer.setAttribute('tabindex', '0');
+            carouselContainer.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') goToSlide(currentIndex - 1);
+                if (e.key === 'ArrowRight') goToSlide(currentIndex + 1);
+            });
+        }
+
+        function touchStart(index) {
+            return function(event) {
+                isDragging = true;
+                startPos = getPositionX(event);
+                animationID = requestAnimationFrame(animation);
+            }
+        }
+
+        function touchMove(event) {
+            if (isDragging) {
+                const currentPosition = getPositionX(event);
+                currentTranslate = prevTranslate + currentPosition - startPos;
+            }
+        }
+
+        function touchEnd() {
+            isDragging = false;
+            cancelAnimationFrame(animationID);
+            
+            const movedBy = currentTranslate - prevTranslate;
+            
+            if (movedBy < -100 && currentIndex < slides.length - 1) currentIndex += 1;
+            if (movedBy > 100 && currentIndex > 0) currentIndex -= 1;
+            
+            goToSlide(currentIndex);
+        }
+
+        function getPositionX(event) {
+            return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+        }
+
+        function animation() {
+            if (isDragging) {
+                // Remove transition while dragging
+                track.style.transition = 'none';
+                track.style.transform = `translateX(${currentTranslate}px)`;
+                requestAnimationFrame(animation);
+            }
+        }
+        
+        // initialize touch listeners properly
+        track.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            startPos = getPositionX(e);
+            
+            // Calculate starting translate
+            const slideWidth = slides[0].getBoundingClientRect().width;
+            const gap = 24;
+            prevTranslate = -(currentIndex * (slideWidth + gap));
+        }, {passive: true});
+    }
+});
+
+    // Animated Counters
+    const statCards = document.querySelectorAll('.stat-card');
+    if ('IntersectionObserver' in window) {
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const numEl = entry.target.querySelector('.stat-num');
+                    if (numEl && !numEl.classList.contains('counted')) {
+                        const target = parseInt(numEl.getAttribute('data-target'));
+                        const duration = 2000;
+                        const step = target / (duration / 16);
+                        let current = 0;
+                        const updateCounter = () => {
+                            current += step;
+                            if (current < target) {
+                                numEl.textContent = Math.ceil(current).toLocaleString();
+                                requestAnimationFrame(updateCounter);
+                            } else {
+                                numEl.textContent = target.toLocaleString();
+                                numEl.classList.add('counted');
+                            }
+                        };
+                        requestAnimationFrame(updateCounter);
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+        statCards.forEach(card => statsObserver.observe(card));
+    }
+
+    // Accordions for Timeline and Education
+    const timelineCards = document.querySelectorAll('.timeline-card, .edu-card');
+    timelineCards.forEach(card => {
+        card.addEventListener('click', () => {
+            // close others
+            timelineCards.forEach(c => {
+                if (c !== card) c.classList.remove('expanded');
+            });
+            card.classList.toggle('expanded');
+        });
+    });
+
+    // Chart.js Visualization
+    const ctx = document.getElementById('skillsChart');
+    if (ctx) {
+        new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['Python', 'SQL', 'Data Analysis', 'Machine Learning', 'Generative AI', 'Visualization', 'DevOps'],
+                datasets: [{
+                    label: 'Proficiency',
+                    data: [90, 85, 95, 80, 75, 85, 70],
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(59, 130, 246, 1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(148, 163, 184, 0.2)' },
+                        grid: { color: 'rgba(148, 163, 184, 0.2)' },
+                        pointLabels: {
+                            color: '#94a3b8',
+                            font: { size: 12, family: 'Inter' }
+                        },
+                        ticks: { display: false, max: 100, min: 0 }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    }
+
+    // Modal Logic
+    const modal = document.createElement('div');
+    modal.id = 'project-modal';
+    modal.className = 'modal';
+    modal.setAttribute('aria-hidden', 'true');
+    modal.innerHTML = `<div class="modal-content">
+        <button class="close-modal" aria-label="Close modal">&times;</button>
+        <h3 id="modal-title">Project Title</h3>
+        <p id="modal-desc">Overview</p>
+        <div id="modal-tools" class="tech-stack" style="margin: 1rem 0;"></div>
+        <div class="modal-actions">
+            <a href="#" id="modal-github" class="btn btn-outline" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+        </div>
+    </div>`;
+    document.body.appendChild(modal);
+
+    const closeBtn = modal.querySelector('.close-modal');
+    closeBtn.addEventListener('click', () => {
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
+    });
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
         }
     });
-});
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+        }
+    });
+
+    const projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach(card => {
+        const title = card.querySelector('h3').textContent;
+        const desc = card.querySelector('.project-summary').textContent;
+        const toolsHtml = card.querySelector('.tech-stack').innerHTML;
+        
+        // add a view details button
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-outline';
+        btn.style.marginTop = '1rem';
+        btn.textContent = 'View Details';
+        btn.addEventListener('click', () => {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-desc').textContent = desc;
+            document.getElementById('modal-tools').innerHTML = toolsHtml;
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+            closeBtn.focus();
+        });
+        card.appendChild(btn);
+    });
