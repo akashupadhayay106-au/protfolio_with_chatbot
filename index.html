@@ -61,17 +61,33 @@
     </nav>
 
     <header id="home" class="hero">
-        <div class="hero-bg-orb"></div>
-        <div class="hero-orb hero-orb-one" aria-hidden="true"></div>
-        <div class="hero-orb hero-orb-two" aria-hidden="true"></div>
-        <div class="container hero-grid">
-            <div class="hero-copy reveal">
-                <span class="eyebrow">Data Science | Analytics | Applied AI</span>
-                <h1>Kalicharan Upadhayay</h1>
-                <p class="hero-title">
-                    Building practical impact as a
-                    <span id="typed-role" class="typed-role" aria-live="polite"></span>
-                </p>
+            <div class="hero-bg-orb"></div>
+            <div class="hero-orb hero-orb-one" aria-hidden="true"></div>
+            <div class="hero-orb hero-orb-two" aria-hidden="true"></div>
+            <canvas id="hero-canvas" class="hero-canvas-fallback" aria-hidden="true"></canvas>
+            <div class="hero-video-overlay" aria-hidden="true"></div>
+            <div class="container hero-grid">
+                <div class="hero-copy reveal">
+                    <span class="eyebrow">Data Science | Analytics | Applied AI</span>
+                    <div class="identity-treatment" aria-label="Kalicharan branding">
+                        <div class="identity-name-wrap">
+                            <span class="identity-label" aria-hidden="true">KALICHARAN</span>
+                            <h1 class="identity-name" aria-hidden="false">
+                                <span>K</span><span>a</span><span>l</span><span>i</span><span>c</span><span>h</span><span>a</span><span>r</span><span>a</span><span>n</span>
+                            </h1>
+                            <span class="identity-tag" aria-hidden="true">
+                                DATA&nbsp;SCIENCE&nbsp;&bull;&nbsp;MACHINE&nbsp;LEARNING&nbsp;&bull;&nbsp;ANALYTICS
+                            </span>
+                            <div class="identity-scanline" aria-hidden="true"></div>
+                            <div class="identity-shimmer" aria-hidden="true"></div>
+                            <div class="identity-underline" aria-hidden="true"></div>
+                        </div>
+                        <h2 class="hero-name-fallback visually-hidden">Kalicharan Upadhayay</h2>
+                    </div>
+                    <p class="hero-title">
+                        Building practical impact as a
+                        <span id="typed-role" class="typed-role" aria-live="polite"></span>
+                    </p>
                 <p class="hero-summary">
                     Data Science professional with experience in Python, SQL, Machine Learning,
                     Power BI, and Generative AI. I design data-driven solutions, mentor learners
@@ -190,6 +206,79 @@
             </div>
         </section>
 
+        <section id="workflow" class="section-card reveal">
+            <div class="section-heading">
+                <span class="section-kicker">Process</span>
+                <h2>Interactive Data Workflow Concept</h2>
+            </div>
+            <p class="lead-text" style="max-width: 72ch; margin: 0 auto 1.5rem; color: var(--muted);">
+                This is a static visual demonstration of the data-to-insight pipeline I apply in real projects. Click each stage to learn more.
+            </p>
+            <ol class="workflow-timeline" aria-label="Data workflow stages">
+                <li class="wf-stage reveal" data-stage="0" tabindex="0" role="button" aria-expanded="false" aria-controls="wf-panel-0">
+                    <div class="wf-icon"><i class="fas fa-database"></i></div>
+                    <div class="wf-content">
+                        <h3>1 · Data</h3>
+                        <p>Gather structured and unstructured inputs from databases, APIs, files, and domain knowledge.</p>
+                    </div>
+                </li>
+                <li class="wf-connector reveal" aria-hidden="true"><i class="fas fa-arrow-right"></i></li>
+                <li class="wf-stage reveal" data-stage="1" tabindex="0" role="button" aria-expanded="false" aria-controls="wf-panel-1">
+                    <div class="wf-icon"><i class="fas fa-filter"></i></div>
+                    <div class="wf-content">
+                        <h3>2 · Clean</h3>
+                        <p>Validate records, handle missing values, and standardize fields for reliable downstream work.</p>
+                    </div>
+                </li>
+                <li class="wf-connector reveal" aria-hidden="true"><i class="fas fa-arrow-right"></i></li>
+                <li class="wf-stage reveal" data-stage="2" tabindex="0" role="button" aria-expanded="false" aria-controls="wf-panel-2">
+                    <div class="wf-icon"><i class="fas fa-chart-column"></i></div>
+                    <div class="wf-content">
+                        <h3>3 · Analyze</h3>
+                        <p>Run EDA, statistical checks, and visual discovery to surface patterns and hypotheses.</p>
+                    </div>
+                </li>
+                <li class="wf-connector reveal" aria-hidden="true"><i class="fas fa-arrow-right"></i></li>
+                <li class="wf-stage reveal" data-stage="3" tabindex="0" role="button" aria-expanded="false" aria-controls="wf-panel-3">
+                    <div class="wf-icon"><i class="fas fa-brain"></i></div>
+                    <div class="wf-content">
+                        <h3>4 · Model</h3>
+                        <p>Train or apply ML / LLM workflows with clear evaluation criteria and reproducible code.</p>
+                    </div>
+                </li>
+                <li class="wf-connector reveal" aria-hidden="true"><i class="fas fa-arrow-right"></i></li>
+                <li class="wf-stage reveal" data-stage="4" tabindex="0" role="button" aria-expanded="false" aria-controls="wf-panel-4">
+                    <div class="wf-icon"><i class="fas fa-lightbulb"></i></div>
+                    <div class="wf-content">
+                        <h3>5 · Insight</h3>
+                        <p>Deliver dashboards, reports, and AI tools that drive real decisions and training outcomes.</p>
+                    </div>
+                </li>
+            </ol>
+            <div class="wf-panels" aria-live="polite">
+                <div id="wf-panel-0" class="wf-panel" hidden>
+                    <h4>Stage 1 — Data collection</h4>
+                    <p>Sources used in real projects include CSV/Excel exports, SQL tables, REST API responses, LLM-generated structured outputs, and labeled training sets from Kaggle or client exports.</p>
+                </div>
+                <div id="wf-panel-1" class="wf-panel" hidden>
+                    <h4>Stage 2 — Cleaning and validation</h4>
+                    <p>Includes handling nulls, outlier checks, type safety, deduplication, and schema consistency — especially important when processing 10K+ production records.</p>
+                </div>
+                <div id="wf-panel-2" class="wf-panel" hidden>
+                    <h4>Stage 3 — Analysis and EDA</h4>
+                    <p>Uses Pandas/NumPy, Matplotlib/Seaborn, Power BI, and Tableau to extract patterns and inform feature engineering before any model is trained.</p>
+                </div>
+                <div id="wf-panel-3" class="wf-panel" hidden>
+                    <h4>Stage 4 — Modeling (ML + GenAI)</h4>
+                    <p>For traditional ML I use Scikit-learn regression, classification, and clustering. For Generative AI I combine LLMs, prompt design, RAG pipelines, Docker, and REST APIs.</p>
+                </div>
+                <div id="wf-panel-4" class="wf-panel" hidden>
+                    <h4>Stage 5 — Delivering insight</h4>
+                    <p>Insights become BI dashboards, project guidance for 500+ learners, production monitoring reports, or directly usable AI applications that support real workflows.</p>
+                </div>
+            </div>
+        </section>
+
         <section id="skills" class="section-card reveal">
             <div class="section-heading">
                 <span class="section-kicker">Expertise</span>
@@ -270,15 +359,15 @@
                 <h2>Professional Experience</h2>
             </div>
             <div class="timeline">
-                <article class="timeline-card reveal">
+                <article class="timeline-card reveal" tabindex="0" role="button" aria-expanded="false" aria-controls="tl-panel-0" id="tl-head-0">
                     <div class="timeline-head">
                         <div>
                             <h3>Data Science Trainer</h3>
                             <p class="timeline-subtitle">Skillected JSSAV Education Pvt. Ltd., Pune</p>
                         </div>
-                        <span>Feb 2026 - Present</span>
+                        <span class="tl-date-badge">Feb 2026 - Present</span>
                     </div>
-                    <ul>
+                    <ul id="tl-panel-0" role="region" aria-labelledby="tl-head-0">
                         <li>Delivered 100+ instructor-led sessions on Python, SQL, Data Analysis, Machine Learning, Power BI, and Generative AI.</li>
                         <li>Mentored 500+ students through hands-on projects, EDA, dashboard development, and predictive modeling.</li>
                         <li>Designed assignments, coding assessments, and mock interviews to improve job readiness.</li>
@@ -325,6 +414,8 @@
             <div class="carousel-container">
                 <div class="carousel-track" id="projects-track">
                     <article class="project-card carousel-slide">
+                        <span class="project-grid-bg" aria-hidden="true"></span>
+                        <span class="project-border-glow" aria-hidden="true"></span>
                         <div class="project-top">
                             <div>
                                 <h3>Prompt Shield - AI Security Framework</h3>
@@ -347,6 +438,8 @@
                     </article>
 
                     <article class="project-card carousel-slide">
+                        <span class="project-grid-bg" aria-hidden="true"></span>
+                        <span class="project-border-glow" aria-hidden="true"></span>
                         <div class="project-top">
                             <div>
                                 <h3>Cloud FinOps AI Assistant</h3>

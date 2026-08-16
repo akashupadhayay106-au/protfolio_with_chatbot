@@ -713,24 +713,28 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', highlightActiveNav);
 
     // -------------------------------------------------------------------------
-    // 15. NETWORK CANVAS BACKGROUND
+    // 15. ENHANCED NETWORK CANVAS BACKGROUND — Data-Flow Animation
     // -------------------------------------------------------------------------
     const canvas = document.getElementById('bg-canvas');
     if (canvas) {
         const ctx = canvas.getContext('2d');
         let particles = [];
+        let flowingNodes = [];
+        let gridAxes = [];
         let animationFrameId;
         let isRunning = false;
         
         const isMobile = window.innerWidth < 768;
-        const particleCount = isMobile ? 25 : 60;
-        const maxDist = 150;
+        const particleCount = isMobile ? 20 : 55;
+        const maxDist = isMobile ? 120 : 160;
         
         const colors = [
-            { r: 103, g: 232, b: 249, a: 0.5 }, // cyan
-            { r: 56, g: 189, b: 248, a: 0.3 },  // blue
-            { r: 139, g: 92, b: 246, a: 0.3 }   // violet
+            { r: 103, g: 232, b: 249, a: 0.55 },  // cyan
+            { r: 56, g: 189, b: 248, a: 0.35 },   // blue
+            { r: 139, g: 92, b: 246, a: 0.35 }    // violet
         ];
+
+        const speedLayers = [0.25, 0.5, 0.85];
 
         const initCanvas = () => {
             const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -739,43 +743,68 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.scale(dpr, dpr);
             
             particles = [];
+            flowingNodes = [];
+            gridAxes = [];
+
             for (let i = 0; i < particleCount; i++) {
+                const layer = i % 3;
                 particles.push({
                     x: Math.random() * window.innerWidth,
                     y: Math.random() * window.innerHeight,
-                    vx: (Math.random() - 0.5) * 0.5,
-                    vy: (Math.random() - 0.5) * 0.5,
-                    baseRadius: Math.random() * 1 + 1,
+                    vx: (Math.random() - 0.5) * speedLayers[layer],
+                    vy: (Math.random() - 0.5) * speedLayers[layer],
+                    baseRadius: Math.random() * 1.2 + 0.6,
                     color: colors[Math.floor(Math.random() * colors.length)],
                     angle: Math.random() * Math.PI * 2,
-                    speed: Math.random() * 0.02 + 0.01
+                    speed: Math.random() * 0.02 + 0.01,
+                    layer: layer,
+                    highlightChance: Math.random()
                 });
             }
+
+            for (let i = 0; i < (isMobile ? 3 : 6); i++) {
+                flowingNodes.push({
+                    progress: Math.random(),
+                    fromIdx: Math.floor(Math.random() * particles.length),
+                    toIdx: Math.floor(Math.random() * particles.length),
+                    speed: 0.0025 + Math.random() * 0.004,
+                    color: colors[Math.floor(Math.random() * colors.length)]
+                });
+            }
+
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            gridAxes = [
+                { x1: 0, y1: h * 0.35, x2: w, y2: h * 0.35, opacity: 0.06 },
+                { x1: 0, y1: h * 0.65, x2: w, y2: h * 0.65, opacity: 0.05 },
+                { x1: w * 0.28, y1: 0, x2: w * 0.28, y2: h, opacity: 0.05 },
+                { x1: w * 0.72, y1: 0, x2: w * 0.72, y2: h, opacity: 0.06 }
+            ];
         };
+
+        let highlightTimer = 0;
+        let highlightPair = null;
 
         const drawParticles = () => {
             ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-            
-            // Update and draw particles
-            particles.forEach(p => {
-                p.x += p.vx;
-                p.y += p.vy;
-                
-                // Bounce
-                if (p.x < 0 || p.x > window.innerWidth) p.vx *= -1;
-                if (p.y < 0 || p.y > window.innerHeight) p.vy *= -1;
-                
-                // Pulsing radius
-                p.angle += p.speed;
-                const r = p.baseRadius + Math.sin(p.angle) * 0.5;
-                
+
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+
+            gridAxes.forEach(axis => {
+                const grad = ctx.createLinearGradient(axis.x1, axis.y1, axis.x2, axis.y2);
+                grad.addColorStop(0, `rgba(103, 232, 249, 0)`);
+                grad.addColorStop(0.3, `rgba(103, 232, 249, ${axis.opacity})`);
+                grad.addColorStop(0.7, `rgba(139, 92, 246, ${axis.opacity * 0.8})`);
+                grad.addColorStop(1, `rgba(56, 189, 248, 0)`);
+                ctx.strokeStyle = grad;
+                ctx.lineWidth = 1;
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, r > 0 ? r : 0.1, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, ${p.color.a})`;
-                ctx.fill();
+                ctx.moveTo(axis.x1, axis.y1);
+                ctx.lineTo(axis.x2, axis.y2);
+                ctx.stroke();
             });
             
-            // Draw lines
             for (let i = 0; i < particles.length; i++) {
                 for (let j = i + 1; j < particles.length; j++) {
                     const dx = particles[i].x - particles[j].x;
@@ -784,13 +813,105 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (dist < maxDist) {
                         const opacity = 1 - (dist / maxDist);
+                        const isHighlighted = highlightPair &&
+                            ((highlightPair.i === i && highlightPair.j === j) ||
+                             (highlightPair.i === j && highlightPair.j === i));
+
+                        const finalOpacity = isHighlighted
+                            ? Math.min(0.55, opacity * 2.5)
+                            : opacity * 0.16;
+
+                        if (isHighlighted) {
+                            ctx.shadowColor = 'rgba(103, 232, 249, 0.8)';
+                            ctx.shadowBlur = 8;
+                        }
+
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(103, 232, 249, ${opacity * 0.15})`;
+                        ctx.strokeStyle = `rgba(103, 232, 249, ${finalOpacity})`;
+                        ctx.lineWidth = isHighlighted ? 1.5 : 0.8;
                         ctx.stroke();
+                        ctx.shadowBlur = 0;
                     }
                 }
+            }
+
+            flowingNodes.forEach(node => {
+                node.progress += node.speed;
+                if (node.progress >= 1) {
+                    node.progress = 0;
+                    node.fromIdx = Math.floor(Math.random() * particles.length);
+                    node.toIdx = Math.floor(Math.random() * particles.length);
+                    while (node.toIdx === node.fromIdx) {
+                        node.toIdx = Math.floor(Math.random() * particles.length);
+                    }
+                }
+
+                const from = particles[node.fromIdx];
+                const to = particles[node.toIdx];
+                const ex = from.x + (to.x - from.x) * node.progress;
+                const ey = from.y + (to.y - from.y) * node.progress;
+
+                const pulseSize = 2.2 + Math.sin(node.progress * Math.PI * 6) * 0.8;
+
+                ctx.shadowColor = `rgba(${node.color.r}, ${node.color.g}, ${node.color.b}, 0.9)`;
+                ctx.shadowBlur = 12;
+                ctx.beginPath();
+                ctx.arc(ex, ey, pulseSize, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${node.color.r}, ${node.color.g}, ${node.color.b}, 0.95)`;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                ctx.beginPath();
+                ctx.arc(ex, ey, pulseSize * 2.5, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${node.color.r}, ${node.color.g}, ${node.color.b}, 0.1)`;
+                ctx.fill();
+            });
+
+            particles.forEach((p, idx) => {
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0 || p.x > w) p.vx *= -1;
+                if (p.y < 0 || p.y > h) p.vy *= -1;
+
+                p.angle += p.speed;
+                const pulse = Math.sin(p.angle);
+                const r = p.baseRadius + pulse * 0.7;
+
+                const glowChance = (Date.now() / 1000 + idx) % 6 < 0.4;
+
+                if (glowChance || p.highlightChance > 0.92) {
+                    ctx.shadowColor = `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, 0.7)`;
+                    ctx.shadowBlur = 10;
+                }
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, Math.max(0.1, r), 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, ${p.color.a})`;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                if (p.layer === 0) {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, Math.max(0.1, r * 2.2), 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, 0.05)`;
+                    ctx.fill();
+                }
+            });
+
+            highlightTimer -= 1;
+            if (highlightTimer <= 0) {
+                highlightTimer = 120 + Math.floor(Math.random() * 180);
+                const i = Math.floor(Math.random() * particles.length);
+                let j = Math.floor(Math.random() * particles.length);
+                while (j === i) j = Math.floor(Math.random() * particles.length);
+                highlightPair = { i, j, timer: 60 };
+            }
+            if (highlightPair) {
+                highlightPair.timer -= 1;
+                if (highlightPair.timer <= 0) highlightPair = null;
             }
         };
 
@@ -801,6 +922,13 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const heroSection = document.getElementById('home');
+
+        const checkViewport = () => {
+            if (!heroSection) return true;
+            const rect = heroSection.getBoundingClientRect();
+            return rect.bottom > 0 && rect.top < window.innerHeight;
+        };
         
         const startAnimation = () => {
             if (!isRunning && !prefersReducedMotion.matches && !document.hidden) {
@@ -817,34 +945,305 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         initCanvas();
-        startAnimation();
+        if (checkViewport()) startAnimation();
 
-        // Handle visibility change
         document.addEventListener('visibilitychange', () => {
-            if (document.hidden) stopAnimation();
-            else startAnimation();
+            if (document.hidden) {
+                stopAnimation();
+            } else {
+                if (checkViewport()) startAnimation();
+            }
         });
 
-        // Debounced resize
+        let scrollCheckRAF;
+        window.addEventListener('scroll', () => {
+            if (scrollCheckRAF) return;
+            scrollCheckRAF = requestAnimationFrame(() => {
+                scrollCheckRAF = null;
+                if (checkViewport()) startAnimation();
+                else stopAnimation();
+            });
+        }, { passive: true });
+
         let resizeTimeout;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimeout);
             stopAnimation();
             resizeTimeout = setTimeout(() => {
                 initCanvas();
-                startAnimation();
+                if (checkViewport()) startAnimation();
             }, 250);
         });
         
         prefersReducedMotion.addEventListener('change', (e) => {
             if (e.matches) stopAnimation();
-            else startAnimation();
+            else if (checkViewport()) startAnimation();
         });
     }
 
     // -------------------------------------------------------------------------
-    // 16. MOUSE SPOTLIGHT
+    // 15b. HERO CANVAS FALLBACK — Concentrated network data pulse
     // -------------------------------------------------------------------------
+    const heroCanvas = document.getElementById('hero-canvas');
+    if (heroCanvas) {
+        const hCtx = heroCanvas.getContext('2d');
+        let hParticles = [];
+        let hFrame;
+        let hRunning = false;
+        const heroEl = document.getElementById('home');
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+        const initHero = () => {
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            const rect = heroEl ? heroEl.getBoundingClientRect() : { width: window.innerWidth, height: window.innerHeight };
+            heroCanvas.width = rect.width * dpr;
+            heroCanvas.height = rect.height * dpr;
+            heroCanvas.style.width = rect.width + 'px';
+            heroCanvas.style.height = rect.height + 'px';
+            hCtx.scale(dpr, dpr);
+
+            hParticles = [];
+            const mobile = window.innerWidth < 768;
+            const count = mobile ? 18 : 32;
+            for (let i = 0; i < count; i++) {
+                hParticles.push({
+                    x: Math.random() * rect.width,
+                    y: Math.random() * rect.height,
+                    vx: (Math.random() - 0.5) * 0.35,
+                    vy: (Math.random() - 0.5) * 0.35,
+                    r: Math.random() * 1.4 + 0.6,
+                    hue: Math.random() < 0.5 ? 'cyan' : (Math.random() < 0.5 ? 'violet' : 'blue'),
+                    pulse: Math.random() * Math.PI * 2
+                });
+            }
+        };
+
+        const drawHero = () => {
+            const rect = heroEl ? heroEl.getBoundingClientRect() : { width: window.innerWidth, height: window.innerHeight };
+            hCtx.clearRect(0, 0, rect.width, rect.height);
+            const w = rect.width;
+            const h = rect.height;
+            const maxD = 110;
+
+            const colorMap = {
+                cyan: { r: 103, g: 232, b: 249 },
+                violet: { r: 139, g: 92, b: 246 },
+                blue: { r: 56, g: 189, b: 248 }
+            };
+
+            for (let i = 0; i < hParticles.length; i++) {
+                for (let j = i + 1; j < hParticles.length; j++) {
+                    const a = hParticles[i];
+                    const b = hParticles[j];
+                    const dx = a.x - b.x;
+                    const dy = a.y - b.y;
+                    const d = Math.sqrt(dx * dx + dy * dy);
+                    if (d < maxD) {
+                        const alpha = (1 - d / maxD) * 0.22;
+                        hCtx.strokeStyle = `rgba(103, 232, 249, ${alpha})`;
+                        hCtx.lineWidth = 0.7;
+                        hCtx.beginPath();
+                        hCtx.moveTo(a.x, a.y);
+                        hCtx.lineTo(b.x, b.y);
+                        hCtx.stroke();
+                    }
+                }
+            }
+
+            hParticles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                if (p.x < 0 || p.x > w) p.vx *= -1;
+                if (p.y < 0 || p.y > h) p.vy *= -1;
+                p.pulse += 0.03;
+
+                const c = colorMap[p.hue];
+                const rad = p.r + Math.sin(p.pulse) * 0.5;
+                hCtx.shadowColor = `rgba(${c.r}, ${c.g}, ${c.b}, 0.75)`;
+                hCtx.shadowBlur = 8;
+                hCtx.beginPath();
+                hCtx.arc(p.x, p.y, rad, 0, Math.PI * 2);
+                hCtx.fillStyle = `rgba(${c.r}, ${c.g}, ${c.b}, 0.75)`;
+                hCtx.fill();
+                hCtx.shadowBlur = 0;
+            });
+        };
+
+        const hAnimate = () => {
+            if (!hRunning) return;
+            drawHero();
+            hFrame = requestAnimationFrame(hAnimate);
+        };
+
+        const heroInView = () => {
+            if (!heroEl) return true;
+            const r = heroEl.getBoundingClientRect();
+            return r.bottom > 50 && r.top < window.innerHeight;
+        };
+
+        const startHero = () => {
+            if (!hRunning && !prefersReduced.matches && !document.hidden) {
+                hRunning = true;
+                hAnimate();
+            }
+        };
+        const stopHero = () => {
+            hRunning = false;
+            if (hFrame) cancelAnimationFrame(hFrame);
+        };
+
+        initHero();
+        if (heroInView()) startHero();
+
+        window.addEventListener('scroll', () => {
+            if (heroInView()) startHero();
+            else stopHero();
+        }, { passive: true });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) stopHero();
+            else if (heroInView()) startHero();
+        });
+
+        window.addEventListener('resize', () => {
+            initHero();
+        });
+
+        prefersReduced.addEventListener('change', e => {
+            if (e.matches) stopHero();
+            else if (heroInView()) startHero();
+        });
+    }
+
+    // -------------------------------------------------------------------------
+    // 15c. HERO VIDEO PAUSE WHEN OFFSCREEN (Future-proofing if video added)
+    // -------------------------------------------------------------------------
+    const heroVideo = document.querySelector('.hero-video');
+    if (heroVideo) {
+        const heroEl = document.getElementById('home');
+        const stopIfNeeded = () => {
+            if (!heroEl) return;
+            const r = heroEl.getBoundingClientRect();
+            const inView = r.bottom > 0 && r.top < window.innerHeight;
+            if (inView && !document.hidden && !heroVideo.paused) return;
+            if (inView && !document.hidden) {
+                heroVideo.play().catch(() => {});
+            } else {
+                heroVideo.pause();
+            }
+        };
+        window.addEventListener('scroll', stopIfNeeded, { passive: true });
+        document.addEventListener('visibilitychange', stopIfNeeded);
+    }
+
+    // -------------------------------------------------------------------------
+    // 16. WORKFLOW STAGE INTERACTIONS (Enhanced keyboard + click)
+    // -------------------------------------------------------------------------
+    const wfStages = document.querySelectorAll('.wf-stage');
+    const wfPanels = document.querySelectorAll('.wf-panel');
+    if (wfStages.length && wfPanels.length) {
+        const toggleStage = (stageEl) => {
+            const idx = Number(stageEl.dataset.stage || 0);
+            const isExpanded = stageEl.getAttribute('aria-expanded') === 'true';
+
+            wfStages.forEach(s => s.setAttribute('aria-expanded', 'false'));
+            wfPanels.forEach(p => p.hidden = true);
+
+            if (!isExpanded) {
+                stageEl.setAttribute('aria-expanded', 'true');
+                const panel = document.getElementById(`wf-panel-${idx}`);
+                if (panel) panel.hidden = false;
+            }
+        };
+
+        wfStages.forEach(stage => {
+            stage.addEventListener('click', () => toggleStage(stage));
+            stage.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleStage(stage);
+                }
+            });
+        });
+
+        if (wfStages[0]) {
+            setTimeout(() => toggleStage(wfStages[0]), 900);
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // 17. SKILL CARD CLICK-TO-HIGHLIGHT
+    // -------------------------------------------------------------------------
+    const skillCards = document.querySelectorAll('#skills .skill-card');
+    skillCards.forEach(card => {
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('role', 'article');
+        const toggleHighlight = () => {
+            const active = card.classList.contains('active-highlight');
+            skillCards.forEach(c => c.classList.remove('active-highlight'));
+            if (!active) card.classList.add('active-highlight');
+        };
+        card.addEventListener('click', toggleHighlight);
+        card.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleHighlight();
+            }
+        });
+    });
+
+    // -------------------------------------------------------------------------
+    // 18. RESUME BUTTON — Toast on successful click
+    // -------------------------------------------------------------------------
+    document.querySelectorAll('.resume-btn, .nav-resume-link').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            try {
+                if (typeof showToast === 'function') {
+                    setTimeout(() => {
+                        showToast('Resume download started!');
+                    }, 120);
+                }
+            } catch (_) { /* no-op */ }
+        });
+    });
+
+    // -------------------------------------------------------------------------
+    // 19. ACCORDION ARIA SUPPORT ENHANCEMENT
+    // -------------------------------------------------------------------------
+    const ariaAccordions = document.querySelectorAll('.timeline-card, .edu-card');
+    ariaAccordions.forEach((acc, idx) => {
+        const panel = acc.querySelector('ul, .expandable-content');
+        const head = acc.querySelector('.timeline-head, h4');
+        if (panel) {
+            const panelId = `acc-panel-${idx}`;
+            const headId = `acc-head-${idx}`;
+            if (head) head.id = headId;
+            panel.id = panelId;
+            acc.setAttribute('aria-controls', panelId);
+            if (head) panel.setAttribute('aria-labelledby', headId);
+            acc.setAttribute('aria-expanded', acc.classList.contains('expanded') ? 'true' : 'false');
+        }
+        acc.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                if (document.activeElement === acc) {
+                    e.preventDefault();
+                    acc.click();
+                }
+            }
+        });
+    });
+
+    const syncAria = () => {
+        ariaAccordions.forEach(acc => {
+            acc.setAttribute('aria-expanded', acc.classList.contains('expanded') ? 'true' : 'false');
+        });
+    };
+    const observer = new MutationObserver(syncAria);
+    ariaAccordions.forEach(acc => observer.observe(acc, { attributes: true, attributeFilter: ['class'] }));
+
+    // -------------------------------------------------------------------------
+    // 16. MOUSE SPOTLIGHT (kept from original numbering consistency)
+    // Moved below to keep order clean in source.
     const spotlight = document.querySelector('.mouse-spotlight');
     if (spotlight && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
         let isSpotlightRunning = false;
