@@ -702,7 +702,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 y: Math.random() * window.innerHeight,
                 vx: (Math.random() - 0.5) * 0.5,
                 vy: (Math.random() - 0.5) * 0.5,
-                radius: Math.random() * 1.5 + 0.5
+                radius: Math.random() * 1.5 + 0.5,
+                pulseSpeed: Math.random() * 0.05,
+                pulseAngle: Math.random() * Math.PI * 2
             });
         }
     }
@@ -719,6 +721,7 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i = 0; i < particles.length; i++) {
             let p = particles[i];
             p.x += p.vx;
+            p.pulseAngle += p.pulseSpeed;
             p.y += p.vy;
             
             // Bounce
@@ -726,7 +729,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (p.y < 0 || p.y > window.innerHeight) p.vy *= -1;
             
             ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.arc(p.x, p.y, p.radius + Math.sin(p.pulseAngle) * 0.5, 0, Math.PI * 2);
             ctx.fillStyle = 'rgba(103, 232, 249, 0.5)';
             ctx.fill();
             

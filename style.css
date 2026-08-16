@@ -1528,3 +1528,16 @@ body, .hero-copy, .profile-card, .section-card, .stack-panel, .contact-card, .bt
         display: none !important;
     }
 }
+
+/* Phase 7: Vignette Overlay */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: -1;
+    background: radial-gradient(circle at center, transparent 30%, rgba(7, 17, 31, 0.8) 100%);
+}
