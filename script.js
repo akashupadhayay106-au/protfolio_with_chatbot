@@ -109,25 +109,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const quickReplyButtons = document.getElementById('quick-reply-buttons');
 
     if (chatbotToggle && chatbotWidget) {
+        const openChatbot = () => {
+            chatbotWidget.removeAttribute('hidden');
+            chatbotWidget.style.display = 'flex';
+        };
+        const closeChatbot = () => {
+            chatbotWidget.style.display = 'none';
+        };
+        const isChatbotOpen = () => chatbotWidget.style.display === 'flex';
+
         chatbotToggle.addEventListener('click', () => {
-            chatbotWidget.style.display = chatbotWidget.style.display === 'flex' ? 'none' : 'flex';
+            if (isChatbotOpen()) closeChatbot(); else openChatbot();
         });
 
-        chatbotClose.addEventListener('click', () => {
-            chatbotWidget.style.display = 'none';
-        });
+        chatbotClose.addEventListener('click', closeChatbot);
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && chatbotWidget.style.display === 'flex') {
-                chatbotWidget.style.display = 'none';
-            }
+            if (e.key === 'Escape' && isChatbotOpen()) closeChatbot();
         });
 
         document.addEventListener('click', (e) => {
-            if (chatbotWidget.style.display === 'flex' && 
-                !chatbotWidget.contains(e.target) && 
+            if (isChatbotOpen() &&
+                !chatbotWidget.contains(e.target) &&
                 !chatbotToggle.contains(e.target)) {
-                chatbotWidget.style.display = 'none';
+                closeChatbot();
             }
         });
 
@@ -402,16 +407,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
                     const el = entry.target;
                     const target = parseInt(el.getAttribute('data-target'), 10);
+                    const hasPlus = el.nextElementSibling && el.nextElementSibling.classList.contains('stat-plus');
                     let current = 0;
-                    const increment = target / 60; // Assuming ~60 frames
-                    
+                    const increment = Math.max(1, target / 60);
+
                     const updateCounter = () => {
                         current += increment;
                         if (current < target) {
-                            el.textContent = Math.ceil(current) + '+';
+                            el.textContent = Math.ceil(current).toString();
                             requestAnimationFrame(updateCounter);
                         } else {
-                            el.textContent = target + '+';
+                            el.textContent = target.toString();
                             el.classList.add('counted');
                         }
                     };
@@ -420,8 +426,80 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }, { threshold: 0.5 });
-        
+
         statNums.forEach(num => statsObserver.observe(num));
+    }
+
+    // -------------------------------------------------------------------------
+    // 7b. TOAST NOTIFICATIONS
+    // -------------------------------------------------------------------------
+    const toastEl = document.getElementById('toast');
+    const toastMessage = document.getElementById('toast-message');
+    let toastTimer;
+
+    const showToast = (message, variant = 'success') => {
+        if (!toastEl) return;
+        if (toastTimer) clearTimeout(toastTimer);
+        if (toastMessage) toastMessage.textContent = message;
+        toastEl.classList.remove('success', 'error');
+        toastEl.classList.add(variant, 'visible');
+        toastTimer = setTimeout(() => {
+            toastEl.classList.remove('visible');
+        }, 2600);
+    };
+
+    // -------------------------------------------------------------------------
+    // 7c. COPY EMAIL BUTTON
+    // -------------------------------------------------------------------------
+    const copyEmailBtn = document.getElementById('copy-email-btn');
+    if (copyEmailBtn) {
+        copyEmailBtn.addEventListener('click', async () => {
+            const email = 'kalicharanupadhayayofficial@gmail.com';
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(email);
+                } else {
+                    const ta = document.createElement('textarea');
+                    ta.value = email;
+                    ta.setAttribute('readonly', '');
+                    ta.style.position = 'absolute';
+                    ta.style.left = '-9999px';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(ta);
+                }
+                showToast('Email copied!');
+            } catch (err) {
+                showToast('Unable to copy email automatically.', 'error');
+            }
+        });
+    }
+
+    // -------------------------------------------------------------------------
+    // 7d. DESKTOP-ONLY MAGNETIC BUTTON EFFECT
+    // -------------------------------------------------------------------------
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const magnetic = document.querySelectorAll('.btn-primary, .btn-secondary, .resume-btn, .contact-card');
+        magnetic.forEach(el => {
+            const strength = el.classList.contains('contact-card') ? 6 : 10;
+            el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - (rect.left + rect.width / 2);
+                const y = e.clientY - (rect.top + rect.height / 2);
+                const clampedX = Math.max(-strength, Math.min(strength, x * 0.25));
+                const clampedY = Math.max(-strength, Math.min(strength, y * 0.25));
+                el.style.setProperty('--mag-x', `${clampedX}px`);
+                el.style.setProperty('--mag-y', `${clampedY}px`);
+                el.style.transform = `translate(${clampedX}px, ${clampedY}px)`;
+                el.style.transition = 'transform 120ms ease-out';
+            });
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = 'translate(0, 0)';
+                el.style.transition = 'transform 320ms ease';
+            });
+        });
     }
 
     // -------------------------------------------------------------------------
@@ -520,29 +598,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    const projectCards = document.querySelectorAll('.project-card');
+    const projectCards = document.querySelectorAll('#projects-track .project-card');
     projectCards.forEach(card => {
-        // Find or create view details button
         let viewBtn = card.querySelector('.view-details-btn');
         if (!viewBtn) {
             viewBtn = document.createElement('button');
-            viewBtn.className = 'view-details-btn btn-primary';
+            viewBtn.className = 'view-details-btn btn btn-outline';
+            viewBtn.type = 'button';
             viewBtn.textContent = 'View Details';
-            viewBtn.style.marginTop = '15px';
-            const contentDiv = card.querySelector('.project-content');
-            if (contentDiv) contentDiv.appendChild(viewBtn);
+            viewBtn.style.margin = '0 1.5rem 1.5rem';
+            card.appendChild(viewBtn);
         }
-        
+
         viewBtn.addEventListener('click', () => {
             lastFocusedElement = document.activeElement;
-            const title = card.querySelector('.project-title')?.textContent || 'Project';
-            const desc = card.querySelector('.project-desc')?.textContent || '';
-            const techItems = Array.from(card.querySelectorAll('.tech-tag')).map(t => t.textContent);
-            
+            const title = card.querySelector('.project-top h3')?.textContent || 'Project';
+            const summary = card.querySelector('.project-top .project-summary')?.textContent || '';
+            const bulletEls = card.querySelectorAll('ul li');
+            const bullets = Array.from(bulletEls).map(li => li.textContent.trim());
+            const techItems = Array.from(card.querySelectorAll('.tech-stack span')).map(t => t.textContent.trim());
+
             modalTitle.textContent = title;
-            modalDesc.textContent = desc;
+            const descHtml = [summary].concat(bullets.map(b => `• ${b}`)).filter(Boolean).join('<br>');
+            modalDesc.innerHTML = descHtml;
             modalTech.innerHTML = techItems.map(tech => `<span class="tech-tag">${tech}</span>`).join('');
-            
+
             projectModal.style.display = 'flex';
             modalClose.focus();
         });
@@ -788,36 +868,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // -------------------------------------------------------------------------
-    // 17. DESKTOP-ONLY 3D TILT
+    // 17. DESKTOP-ONLY 3D TILT + SPOTLIGHT VARS
     // -------------------------------------------------------------------------
-    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches && 
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
         !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        
-        const tiltCards = document.querySelectorAll('.skill-card, .highlight-card');
-        
+
+        const tiltCards = document.querySelectorAll('.skill-card, .highlight-card, .project-card, .edu-card, .info-card, .contact-card');
+
         tiltCards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
-                
+
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
-                
-                const rotateX = ((y - centerY) / centerY) * -6;
-                const rotateY = ((x - centerX) / centerX) * 6;
-                
-                // Clamp
-                const clampX = Math.max(-6, Math.min(6, rotateX));
-                const clampY = Math.max(-6, Math.min(6, rotateY));
-                
-                card.style.transform = `perspective(800px) rotateX(${clampX}deg) rotateY(${clampY}deg) translateZ(10px)`;
-                card.style.transition = 'transform 0.1s ease';
+
+                const rotateX = ((y - centerY) / centerY) * -5;
+                const rotateY = ((x - centerX) / centerX) * 5;
+
+                const clampX = Math.max(-5, Math.min(5, rotateX));
+                const clampY = Math.max(-5, Math.min(5, rotateY));
+                const pctX = (x / rect.width) * 100;
+                const pctY = (y / rect.height) * 100;
+
+                card.style.setProperty('--tilt-x', `${x}px`);
+                card.style.setProperty('--tilt-y', `${y}px`);
+                card.style.setProperty('--tilt-pct-x', `${pctX}%`);
+                card.style.setProperty('--tilt-pct-y', `${pctY}%`);
+                card.style.transform = `perspective(900px) rotateX(${clampX}deg) rotateY(${clampY}deg) translateZ(8px)`;
+                card.style.transition = 'transform 120ms ease';
             });
-            
+
             card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
-                card.style.transition = 'transform 0.5s ease';
+                card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+                card.style.transition = 'transform 420ms ease';
             });
         });
     }
