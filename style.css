@@ -1499,3 +1499,32 @@ body, .hero-copy, .profile-card, .section-card, .stack-panel, .contact-card, .bt
     transform: none !important;
   }
 }
+
+/* Phase 7 & 8: Network Canvas & Spotlight */
+.bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    pointer-events: none;
+    background-color: var(--bg);
+}
+
+.mouse-spotlight {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: -1;
+    background: radial-gradient(circle 600px at var(--spotlight-x, 50vw) var(--spotlight-y, 50vh), var(--shadow-glow), transparent 80%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bg-canvas, .mouse-spotlight {
+        display: none !important;
+    }
+}
